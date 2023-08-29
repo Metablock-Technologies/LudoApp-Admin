@@ -60,13 +60,14 @@ function Challenge() {
     },
     // Add more game objects here
   ];
-
-
+  const [penalties, setPenalties] = useState(initialGames.map(data => data.penalty));
+  const [editingIndex, setEditingIndex] = useState(null);
   const [games, setGames] = useState(initialGames);
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [statusFilter, setStatusFilter] = useState('All'); // 'All', 'Pending', 'Completed', 'In Progress', 'Cancelled'
+
 
 // download the pdf
   
@@ -103,10 +104,6 @@ function Challenge() {
   };
 
 
-
-
-  const [penalties, setPenalties] = useState(initialGames.map(data => data.penalty));
-  const [editingIndex, setEditingIndex] = useState(null);
 
   const handleReset = (e) => {
     e.preventDefault()
@@ -217,7 +214,6 @@ function Challenge() {
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Game Type</th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Date</th>
                               </tr>
-
                             </thead>
                             <tbody>
                               {renderedTableRows}

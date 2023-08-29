@@ -1,419 +1,309 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-// import "./AdminManager.css";
-import { TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-import { Table } from 'react-bootstrap';
-import EditPermissison from './Permissions/EditPermission';
+import React, { useState, useEffect } from 'react';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Checkbox } from '@mui/material';
+import { Visibility, Check } from '@mui/icons-material';
+import ImageViewer from './ImageViewer';
+import { baseURL } from '../token';
+import axios from 'axios';
 
-const boxStyle = {
-    width: '200px',
-    height: '200px',
-    backgroundColor: '#f0f0f0',
-    borderRadius: '10px',
-    boxShadow: '0 0 10px 5px transparent',
-    transition: 'box-shadow 0.3s ease',
-    ':hover': {
-        boxShadow: '0 0 10px 5px purple',
-    },
-};
+function AdminPanelTable() {
+    const [activeTableData, setActiveTableData] = useState([]);
+    const [inactiveTableData, setInactiveTableData] = useState([]);
+    const [viewerOpen, setViewerOpen] = useState(false);
+    const [selectedImageUrl, setSelectedImageUrl] = useState('');
+    const [selectedValue, setSelectedValue] = useState('');
 
-const columns = [
-    { id: 'numbers', label: '#', minWidth: 50 },
-    { id: 'id', label: 'ID', minWidth: 100 },
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'mobile', label: 'Mobile', minWidth: 100 },
-    { id: 'kyc', label: 'KYC', minWidth: 100 },
-    { id: 'edit', label: 'Edit Permission', minWidth: 150 },
-];
 
-function createData(numbers, id, name, mobile, kyc) {
-    return { id, numbers, name, mobile, kyc };
-}
+    // const [editingIndex, setEditingIndex] = useState(null);
+    // const [searchTerm, setSearchTerm] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    // const [statusFilter, setStatusFilter] = useState('All'); // 'All', 'Pending', 'Completed', 'In Progress', 'Cancelled'
+    const [selectedUserIndex, setSelectedUserIndex] = useState(-1); // Initialize with -1
+    const [selectedOption, setSelectedOption] = useState(''); // State to store selected option
 
-const initialRows = [
-    createData('Game-001', 'Player-1', 'Player 1', '+91 1234567890', 'Verified'),
-    createData('Game-002', 'Player-2', 'Player 2', '+86 9876543210', 'Not Verified'),
-    createData('Game-003', 'Player-3', 'Player 3', '+1 5551234567', 'Verified'),
-    // Add more rows here...
-];
+    // Define options for the dropdown
+    const options = [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+        { value: 'option3', label: 'Option 3' },
+        // Add more options as needed
+    ];
 
-const initialUpperList = [
-    createData('Game-004', 'Player-4', 'Player 4', '+91 9876543210', 'Not Verified'),
-    createData('Game-005', 'Player-5', 'Player 5', '+86 1234567890', 'Verified'),
-    // Add more players here...
-];
+    // Event handler for dropdown change
+    const handleDropdownChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
 
-export default function AdminPanelTable() {
-    const [page, setPage] = React.useState(0);
-    const [upperList, setUpperList] = React.useState(initialUpperList); // Initialize the upperList state with data
-    const [rows, setRows] = React.useState(initialRows);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const navigate = useNavigate();
+    const handleEditClick = (index) => {
+        setSelectedUserIndex(index); // Set the selected user index
+    };
 
-    const handleEditPermission = (playerId) => {
-        // Find the player in the current upperList array
-        const playerIndex = upperList.findIndex((row) => row.id === playerId);
+    const handleCloseEditModal = () => {
+        setSelectedUserIndex(-1); // Reset the selected user index to close the modal
+    };
 
-        if (playerIndex !== -1) {
-            // Remove the player from the upperList array
-            const updatedUpperList = [...upperList];
-            const removedPlayer = updatedUpperList.splice(playerIndex, 1)[0];
+    const handleImageClick = (imageUrl) => {
+        setSelectedImageUrl(imageUrl);
+        setViewerOpen(!viewerOpen);
+    };
 
-            // Add the removed player to the rows array
-            setRows([...rows, removedPlayer]);
 
-            // Update the state with the modified arrays
-            setUpperList(updatedUpperList);
+    const handleReset = (e) => {
+        e.preventDefault()
+        console.log("hwyy");
+        setStartDate('');
+        setEndDate('');
+    };
+    const handleStartDateChange = (event) => {
+        setStartDate(event.target.value);
+    };
+
+    const handleEndDateChange = (event) => {
+        setEndDate(event.target.value);
+    };
+
+    const renderedActiveTableRows = activeTableData.map((data, index) => (
+        <TableRow key={index}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{data.name}</TableCell>
+            <TableCell>{data.username}</TableCell>
+            <TableCell>{data.phone}</TableCell>
+            <TableCell>{data.email}</TableCell>
+            <TableCell>{data.status}</TableCell>
+            <TableCell>
+                <Button onClick={() => handleEditClick(index)}>Edit</Button>
+                {selectedUserIndex === index && (
+                    <div>
+                        <p>Edit Permissions</p>
+                        <div>
+                            <Checkbox id="permission1" name="permission1" />
+                            <label htmlFor="permission1">Permission 1</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission2" name="permission2" />
+                            <label htmlFor="permission2">Permission 2</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission3" name="permission3" />
+                            <label htmlFor="permission3">Permission 3</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission4" name="permission4" />
+                            <label htmlFor="permission4">Permission 4</label>
+                        </div>
+                        <Button onClick={handleCloseEditModal}>Send</Button>
+                    </div>
+                )}
+            </TableCell>
+        </TableRow>
+    ));
+
+    const renderedInactiveTableRows = inactiveTableData.map((data, index) => (
+        <TableRow key={index}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{data.name}</TableCell>
+            <TableCell>{data.username}</TableCell>
+            <TableCell>{data.phone}</TableCell>
+            <TableCell>{data.email}</TableCell>
+            <TableCell>{data.status}</TableCell>
+            <TableCell>
+                <Button onClick={() => handleEditClick(index)}>Edit</Button>
+                {selectedUserIndex === index && (
+                    <div>
+                        <p>Edit Permissions</p>
+                        <div>
+                            <Checkbox id="permission1" name="permission1" />
+                            <label htmlFor="permission1">Permission 1</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission2" name="permission2" />
+                            <label htmlFor="permission2">Permission 2</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission3" name="permission3" />
+                            <label htmlFor="permission3">Permission 3</label>
+                        </div>
+                        <div>
+                            <Checkbox id="permission4" name="permission4" />
+                            <label htmlFor="permission4">Permission 4</label>
+                        </div>
+                        <Button onClick={handleCloseEditModal}>Send</Button>
+                    </div>
+                )}
+            </TableCell>
+        </TableRow>
+    ));
+
+    const fetchUserData = async () => {
+        try {
+            const accessToken = localStorage.getItem('access_token');
+            const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
+            const response = await axios.get(baseURL + '/admin/all', {
+                headers: headers,
+            });
+
+            const activeUsers = response.data.data.filter(user => user.status === 'active');
+            const inactiveUsers = response.data.data.filter(user => user.status === 'inactive');
+
+            setActiveTableData(activeUsers);
+            setInactiveTableData(inactiveUsers);
+        } catch (err) {
+            console.log(err);
         }
     };
 
-    // const handleChangePage = (event, newPage) => {
-    //     setPage(newPage);
-    // };
-
-    // const handleChangeRowsPerPage = (event) => {
-    //     setRowsPerPage(+event.target.value);
-    //     setPage(0);
-    // };
+    useEffect(() => {
+        fetchUserData();
+    }, []);
 
     return (
         <>
-            <div className="admin-manager">
-                <div style={{ marginTop: "5%", textAlign: 'left', fontSize: '34px', color: "#29aad0", padding: '16px' }}>
-                    All Admin List
+            <section style={{ paddingTop: '5rem' }} className="content">
+                <div className="container-fluid" style={{ marginTop: '-35px' }}>
+                    <div className="row">
+                        <div className="col-12 mt-5">
+                            <div className="card">
+                                <div className="card-body">
+                                    <form >
+                                        <input type="hidden" name="_token" defaultValue="ufIIKQky4pOtOxFVX1zXKHf58iF6SEHdlPsJf3tm" />
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <div className="form-group">
+                                                <label>Pick a start date:</label>
+                                                <div className="input-group date" id="datepicker" data-target-input="nearest">
+                                                    <input type="date"
+                                                        className="form-control t"
+                                                        placeholder="yyyy-mm-dd"
+                                                        name="start_date"
+                                                        value={startDate}
+                                                        onChange={handleStartDateChange} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <div className="form-group">
+                                                <label>Pick a end date:</label>
+                                                <div className="input-group date" id="datepicker1" data-target-input="nearest">
+                                                    <input type="date"
+                                                        className="form-control"
+                                                        placeholder="yyyy-mm-dd"
+                                                        name="end_date"
+                                                        value={endDate}
+                                                        onChange={handleEndDateChange} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style={{ clear: 'both' }} />
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <label htmlFor="validationCustomUsername">Search  User</label>
+                                            <div className="input-group">
+                                                <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                                            </div>
+                                        </div>
+                                        <div style={{ clear: 'both' }} />
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <label>Select an Option:</label>
+                                            <select
+                                                className="form-control"
+                                                value={selectedOption}
+                                                onChange={handleDropdownChange}
+                                                name="dropdownOption"
+                                            >
+                                                <option value="">Select an option</option>
+                                                {options.map(option => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div style={{ clear: 'both' }} />
+                                        <br />
+                                        <div className="col-md-12 mb-12">
+                                            <center>
+                                                <button className="btn btn-primary" style={{}} >Search Now</button>
+                                                <button className='btn btn-success' type='button' style={{ marginLeft: 20, textAlign: 'center' }} onClick={handleReset}>Reset</button>
+                                                {/* <button onClick={handleReset}>Reset</button> */}
+                                            </center>
+                                        </div>
+                                        <br />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <Paper sx={{ background: "transparent", border: "1px solid blue", width: '100%', overflow: 'hidden' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
-                        {columns.map((column) => (
-                            <div
-                                key={column.id}
-                                style={{
-                                    textAlign: "center",
-                                    background: "transparent",
-                                    color: "blue",
-                                    minWidth: column.minWidth,
-                                    fontWeight: 'bold',
-                                    padding: '8px',
-                                    borderBottom: '1px solid blue',
-                                    borderRadius: "5px",
-                                    boxShadow: '10px 1px  16px -10px blue',
-                                    flex: 1,
-                                }}
-                            >
-                                {column.label}
-                            </div>
-                            
-                        ))}
-                    </div>
-                    {rows.map((row, index) => (
-                        <div key={row.id} style={{ color: "#9695a0", display: 'flex', textAlign: "center", alignItems: 'center', padding: '8px' }}>
-                            <div style={{ minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>
-                                {index + 1}
-                            </div>
-                            <div style={{ color: "#9695a0", textAlign: "center", minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>{row.id}</div>
-                            <div style={{ color: "#9695a0", textAlign: "center", minWidth: columns[1].minWidth, padding: '8px', flex: 1 }}>{row.name}</div>
-                            <div
-                                style={{
-
-                                    textAlign: "center",
-                                    minWidth: columns[3].minWidth,
-                                    padding: '8px',
-                                    flex: 1,
-                                    color: columns[3].id === 'mobile' ? 'b#9695a0' : 'inherit',
-                                }}
-                            >
-                                {row.mobile}
-                            </div>
-                            <div style={{ textAlign: "center", border: "1px sold black", borderRadius: "5px", textAlign: "center", border: "1px solid lime  ", color: "lime", minWidth: columns[4].minWidth, padding: '8px', flex: 1 }}>{row.kyc}</div>
-                            <div style={{ textAlign: "center", minWidth: columns[5].minWidth, padding: '8px', flex: 1 }}>
-                                <Button sx={{ color: "blue" }} variant="outlined" onClick={()=>navigate('/EditPermissison')}>
-                                    Edit Permission
-                                </Button>
+            </section >
+            <section style={{ paddingTop: '5rem' }} className="content">
+                <div className="container-fluid" style={{ marginTop: '-35px' }}>
+                    <div className="row">
+                        <div className="col-12 mt-5">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="single-table">
+                                        <div id="active_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <div className="table-responsive">
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>Sr No.</TableCell>
+                                                            <TableCell>Name</TableCell>
+                                                            <TableCell>Username</TableCell>
+                                                            <TableCell>Phone</TableCell>
+                                                            <TableCell>Email</TableCell>
+                                                            <TableCell>Status</TableCell>
+                                                            <TableCell>Edit Permission</TableCell>
+                                                            <TableCell>Date</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>{renderedActiveTableRows}</TableBody>
+                                                </Table>
+                                            </div>
+                                            <div className="dataTables_info" id="active_table_info" role="status" aria-live="polite">
+                                                Showing {activeTableData.length} active entries
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    ))}
-                </Paper>
-                
-
-                <Paper sx={{ background: 'transparent', border: '1px solid blue', width: '100%', overflow: 'hidden' }}>
-                    {/* Rendering code for the second table (upperList) */}
-                    <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
-                        {columns.map((column) => (
-                            <div
-                                key={column.id}
-                                style={{
-                                    textAlign: 'center',
-                                    background: 'transparent',
-                                    color: 'blue',
-                                    minWidth: column.minWidth,
-                                    fontWeight: 'bold',
-                                    padding: '8px',
-                                    borderBottom: '1px solid blue',
-                                    borderRadius: '5px',
-                                    boxShadow: '10px 1px 16px -10px blue',
-                                    flex: 1,
-                                }}
-                            >
-                                {column.label}
-                            </div>
-                        ))}
-                    </div>
-                    {upperList.map((row, index) => (
-                        <div key={row.id} style={{ color: 'blue', display: 'flex', textAlign: 'center', alignItems: 'center', padding: '8px' }}>
-                            <div style={{ minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>
-                                {index + 1}
-                            </div>
-                            <div style={{ color: 'blue', textAlign: 'center', minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>
-                                {row.id}
-                            </div>
-                            <div style={{ color: 'blue', textAlign: 'center', minWidth: columns[1].minWidth, padding: '8px', flex: 1 }}>
-                                {row.name}
-                            </div>
-                            <div style={{ textAlign: 'center', minWidth: columns[3].minWidth, padding: '8px', flex: 1, color: columns[3].id === 'mobile' ? 'blue' : 'inherit' }}>
-                                {row.mobile}
-                            </div>
-                            <div style={{ textAlign: 'center', minWidth: columns[4].minWidth, padding: '8px', flex: 1 }}>
-                                {row.kyc}
-                            </div>
-                            <div style={{ textAlign: 'center', minWidth: columns[5].minWidth, padding: '8px', flex: 1 }}>
-                                <Button sx={{ boxStyle, color: 'purple', border: "1px solid purple" }} variant="outlined" onClick={() => handleEditPermission(row.id)}>
-                                    Revoke Permission
-                                </Button>
+                    </div >
+                    <div className="row">
+                        <div className="col-12 mt-5">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="single-table">
+                                        <div id="inactive_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                            <div className="table-responsive">
+                                                <Table>
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>Sr No.</TableCell>
+                                                            <TableCell>Name</TableCell>
+                                                            <TableCell>Username</TableCell>
+                                                            <TableCell>Phone</TableCell>
+                                                            <TableCell>Email</TableCell>
+                                                            <TableCell>Status</TableCell>
+                                                            <TableCell>Edit Permission</TableCell>
+                                                            <TableCell>Date</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>{renderedInactiveTableRows}</TableBody>
+                                                </Table>
+                                            </div>
+                                            <div className="dataTables_info" id="inactive_table_info" role="status" aria-live="polite">
+                                                Showing {inactiveTableData.length} inactive entries
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    ))}
-                </Paper>
-            </div>
+                    </div>
+                </div >
+            </section >
         </>
     );
 }
 
-
-
-
-
-// import * as React from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import Paper from '@mui/material/Paper';
-// import Button from '@mui/material/Button';
-// import "./AdminManager.css"
-// import { TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
-// import { Table } from 'react-bootstrap';
-
-// const boxStyle = {
-//     width: '200px',
-//     height: '200px',
-//     backgroundColor: '#f0f0f0',
-//     borderRadius: '10px',
-//     boxShadow: '0 0 10px 5px transparent',
-//     transition: 'box-shadow 0.3s ease',
-//     ':hover': {
-//         boxShadow: '0 0 10px 5px purple',
-//     },
-// };
-
-// const columns = [
-//     { id: 'numbers', label: '#', minWidth: 50 },
-//     { id: 'id', label: 'ID', minWidth: 100 },
-//     { id: 'name', label: 'Name', minWidth: 170 },
-//     { id: 'mobile', label: 'Mobile', minWidth: 100 },
-//     { id: 'kyc', label: 'KYC', minWidth: 100 },
-//     { id: 'edit', label: 'Edit Permission', minWidth: 150 },
-// ];
-
-// function createData(numbers, id, name, mobile, kyc) {
-//     return { id, numbers, name, mobile, kyc };
-// }
-
-
-// const initialRows = [
-//     createData('Game-001', 'Player-1', 'Player 1', '+91 1234567890', 'Verified'),
-//     createData('Game-002', 'Player-2', 'Player 2', '+86 9876543210', 'Not Verified'),
-//     createData('Game-003', 'Player-3', 'Player 3', '+1 5551234567', 'Verified'),
-//     // Add more rows here...
-// ];
-
-// const initialUpperList = [
-//     createData('Game-004', 'Player-4', 'Player 4', '+91 9876543210', 'Not Verified'),
-//     createData('Game-005', 'Player-5', 'Player 5', '+86 1234567890', 'Verified'),
-// ];
-
-// export default function AdminPanelTable() {
-//     const [page, setPage] = React.useState(0);
-//     const [upperList, setUpperList] = React.useState([initialUpperList]);
-//     const [rows, setRows] = React.useState(initialRows);
-//     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-   
-//     const navigate = useNavigate();
-
-//     const handleEditPermission = (playerId) => {
-//         // Redirect to another page for editing player permission
-//         navigate(`/edit-permission/${playerId}`);
-
-//         const playerIndex = rows.findIndex((row) => row.id === playerId);
-
-//         if (playerIndex !== -1) {
-//             // Remove the player from the rows array
-//             const updatedRows = [...rows];
-//             const removedPlayer = updatedRows.splice(playerIndex, 1)[0];
-
-//             // Add the removed player to the upperList
-//             setUpperList([...upperList, removedPlayer]);
-
-//             // Update the state with the modified arrays
-//             setRows(updatedRows);
-//         }
-//     };
-
-//     const handleChangePage = (event, newPage) => {
-//         setPage(newPage);
-//     };
-//     const handleAddAgent = (row) => {
-
-
-//         // Add the agent to the upper list
-//         setUpperList([...upperList, row]);
-
-
-//     };
-
-
-//     const handleChangeRowsPerPage = (event) => {
-//         setRowsPerPage(+event.target.value);
-//         setPage(0);
-//     };
-
-
-
-//     return (
-//         <> <div className="admin-manager">
-
-
-//             <div style={{ marginTop: "5%", textAlign: 'left', fontSize: '34px', color: "#29aad0", padding: '16px' }}>
-//                 All Admin List
-//             </div>
-//             <Paper sx={{ background: "transparent", border: "1px solid blue", width: '100%', overflow: 'hidden' }}>
-
-                // <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
-                //     {columns.map((column) => (
-                //         <div
-                //             key={column.id}
-                //             style={{
-                //                 textAlign: "center",
-                //                 background: "transparent",
-                //                 color: "blue",
-                //                 minWidth: column.minWidth,
-                //                 fontWeight: 'bold',
-                //                 padding: '8px',
-                //                 borderBottom: '1px solid blue',
-                //                 borderRadius: "5px",
-                //                 boxShadow: '10px 1px  16px -10px blue',
-                //                 flex: 1,
-                //             }}
-                //         >
-                //             {column.label}
-                //         </div>
-                //     ))}
-                // </div>
-            //     {rows.map((row, index) => (
-            //         <div key={row.id} style={{ color: "#9695a0", display: 'flex', textAlign: "center", alignItems: 'center', padding: '8px' }}>
-            //             <div style={{ minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>
-            //                 {index + 1}
-            //             </div>
-            //             <div style={{ color: "#9695a0", textAlign: "center", minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>{row.id}</div>
-            //             <div style={{ color: "#9695a0", textAlign: "center", minWidth: columns[1].minWidth, padding: '8px', flex: 1 }}>{row.name}</div>
-            //             <div
-            //                 style={{
-
-            //                     textAlign: "center",
-            //                     minWidth: columns[3].minWidth,
-            //                     padding: '8px',
-            //                     flex: 1,
-            //                     color: columns[3].id === 'mobile' ? 'b#9695a0' : 'inherit',
-            //                 }}
-            //             >
-            //                 {row.mobile}
-            //             </div>
-            //             <div style={{ textAlign: "center", border: "1px sold black", borderRadius: "5px", textAlign: "center", border: "1px solid lime  ", color: "lime", minWidth: columns[4].minWidth, padding: '8px', flex: 1 }}>{row.kyc}</div>
-            //             <div style={{ textAlign: "center", minWidth: columns[5].minWidth, padding: '8px', flex: 1 }}>
-            //                 <Button sx={{ color: "blue" }} variant="outlined" onClick={() => handleEditPermission(row.id)}>
-            //                     Edit Permission
-            //                 </Button>
-            //             </div>
-            //         </div>
-            //     ))}
-            // </Paper>
-// // ... Other code ...
-
-//             <Paper sx={{ background: 'transparent', border: '1px solid blue', width: '100%', overflow: 'hidden' }}>
-//                 {/* ... Same as before ... */}
-//                 {upperList.map((row, index) => (
-//                     <div key={row.id} style={{ color: 'blue', display: 'flex', textAlign: 'center', alignItems: 'center', padding: '8px' }}>
-//                         {/* ... Same as before ... */}
-//                         <div style={{ textAlign: 'center', minWidth: columns[4].minWidth, padding: '8px', flex: 1 }}>
-//                             {row.kyc}
-//                         </div>
-//                         <div style={{ textAlign: 'center', minWidth: columns[5].minWidth, padding: '8px', flex: 1 }}>
-//                             <Button sx={{ boxStyle, color: 'purple', border: "1px solid purple" }} variant="outlined" onClick={() => handleEditPermission(row.id)}>
-//                                 Revoke Permission
-//                             </Button>
-//                         </div>
-//                     </div>
-//                 ))}
-//             </Paper>
-
-
-//             {/* 
-//                 <Paper sx={{ background: 'transparent', border: '1px solid blue', width: '100%', overflow: 'hidden' }}>
-//                     <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
-//                         {columns.map((column) => (
-//                             <div
-//                                 key={column.id}
-//                                 style={{
-//                                     textAlign: 'center',
-//                                     background: 'transparent',
-//                                     color: 'blue',
-//                                     minWidth: column.minWidth,
-//                                     fontWeight: 'bold',
-//                                     padding: '8px',
-//                                     borderBottom: '1px solid blue',
-//                                     borderRadius: '5px',
-//                                     boxShadow: '10px 1px  16px -10px blue',
-//                                     flex: 1,
-//                                 }}
-//                             >
-//                                 {column.label}
-//                             </div>
-//                         ))}
-//                     </div>
-//                     {rows.map((row, index) => (
-//                         <div key={row.id} style={{ color: 'blue', display: 'flex', textAlign: 'center', alignItems: 'center', padding: '8px' }}>
-//                             <div style={{ minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>
-//                                 {index + 1}
-//                             </div>
-//                             <div style={{ color: 'blue', textAlign: 'center', minWidth: columns[0].minWidth, padding: '8px', flex: 1 }}>{row.id}</div>
-//                             <div style={{ color: 'blue', textAlign: 'center', minWidth: columns[1].minWidth, padding: '8px', flex: 1 }}>{row.name}</div>
-//                             <div style={{ textAlign: 'center', minWidth: columns[3].minWidth, padding: '8px', flex: 1, color: columns[3].id === 'mobile' ? 'blue' : 'inherit' }}>
-//                                 {row.mobile}
-//                             </div>
-//                             <div style={{ textAlign: 'center', minWidth: columns[4].minWidth, padding: '8px', flex: 1 }}>
-                            
-//                                 {row.permission}
-//                             </div>
-//                             <div style={{ textAlign: 'center', minWidth: columns[5].minWidth, padding: '8px', flex: 1 }}>
-//                                 <Button sx={{ boxStyle, color: 'purple', border:"1px solid purple"  }} variant="outlined" onClick={() => handleEditPermission(row.id)}>
-//                                 Grant Permission
-//                                 </Button>
-//                             </div>
-//                         </div>
-//                     ))}
-//                 </Paper> */}
-
-
-//         </div>
-
-//         </>
-//     );
-// }
+export default AdminPanelTable;
