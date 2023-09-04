@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import "./styles/AdminEarning.css"
 import axios from 'axios';
 import { baseURL } from '../token';
+import { TablePagination } from '@mui/material';
 
 export default function StickyHeadTable() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [totalEarning, setTotalEarning] = React.useState('5,00,000');
     const [searchAmount, setSearchAmount] = React.useState('');
     const [editingIndex, setEditingIndex] = useState(null);
@@ -83,13 +84,9 @@ export default function StickyHeadTable() {
     });
 
 
-    // Calculate start and end indices for the current page
-    const startIndex = page * rowsPerPage;
-    const endIndex = startIndex + rowsPerPage;
-    const currentRows = filteredData.slice(startIndex, endIndex);
 
 
-    const renderedTableRows = currentRows.map((data, index) => (
+    const renderedTableRows = initialRows.map((data, index) => (
 
         <tr role="row" key={index}>
             <td>{data.number}</td>
@@ -99,26 +96,44 @@ export default function StickyHeadTable() {
     ));
 
 
-    // Handle page change
-    const handlePageChange = (newPage) => {
-        setPage(newPage);
-    };
+
     const handleSearchAmountChange = (e) => {
         setSearchAmount(e.target.value);
         setPage(0); // Reset page when search query changes
     };
 
+    // pagination part 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    // Calculate the index range for the current page
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+
+  // pagination part 
 
     return (
-        <> <div className="designing-mai    n-div">
-            <section style={{ paddingTop: '50px' }} className="content">
+
+        <> 
+            <div className='fade-in'>
+        <div className="designing-mai    n-div">
+            <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+                <h3 style={{ color: 'white' }}> Admin Earning</h3>
+            </div>
+            <section style={{ marginTop: '5rem' }} className="content">
 
                 <div className="container-fluid" style={{ marginTop: '-35px' }}>
                     <div className="row">
                         {/* Primary table start */}
                         <div className="col-12 mt-5">
                             <div className="card">
-                                <div className="card-body">
+                                <div style={{ background: '#a6a6ff' }} className="card-body">
                                     <div className="single-table">
                                         <div className="table-responsive">
                                             {/* fund history */}
@@ -151,31 +166,18 @@ export default function StickyHeadTable() {
                                                         {renderedTableRows}
                                                     </tbody>
                                                 </table>
-                                                <div className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                                                    Showing {startIndex + 1} to {Math.min(endIndex, filteredData.length)} of {filteredData.length} entries
-                                                </div>
-
-                                                <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                                                    <ul className="pagination">
-                                                        <li className={`paginate_button page-item ${page === 0 ? 'disabled' : ''}`} id="table_id_previous">
-                                                            <a href="#" onClick={() => handlePageChange(page - 1)} tabIndex={0} className="page-link">
-                                                                Previous
-                                                            </a>
-                                                        </li>
-                                                        {Array.from({ length: page }, (_, index) => (
-                                                            <li key={index} className={`paginate_button page-item ${page === index ? 'active' : ''}`}>
-                                                                <a href="#" onClick={() => handlePageChange(index)} tabIndex={0} className="page-link">
-                                                                    {index + 1}
-                                                                </a>
-                                                            </li>
-                                                        ))}
-                                                        <li className={`paginate_button page-item ${page === page - 1 ? 'disabled' : ''}`} id="table_id_next">
-                                                            <a href="#" onClick={() => handlePageChange(page + 1)} tabIndex={0} className="page-link">
-                                                                Next
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                               
+                                                        <div style={{alignItems:'center'}} className="pagination-container">
+                                                            <TablePagination sx={{ alignItems:'center', color: 'purple' }}
+                                                                rowsPerPageOptions={[5, 10, 25]}
+                                                                component="div"
+                                                                count={filteredData.length}
+                                                                rowsPerPage={rowsPerPage}
+                                                                page={page}
+                                                                onPageChange={handleChangePage}
+                                                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                                            />
+                                                        </div>
                                             </div>
                                             <br /><br />
 
@@ -190,7 +192,7 @@ export default function StickyHeadTable() {
                 </div>
             </section>
         </div>
-
+</div>
 
         </>
 

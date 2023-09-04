@@ -4,36 +4,15 @@ import { Visibility, Check } from '@mui/icons-material';
 import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
 import axios from 'axios';
-
+import "../Components/styles/AdminManager.css"
+import { useNavigate } from 'react-router-dom';
 function AdminPanelTable() {
     const [activeTableData, setActiveTableData] = useState([]);
-    const [inactiveTableData, setInactiveTableData] = useState([]);
-    const [viewerOpen, setViewerOpen] = useState(false);
-    const [selectedImageUrl, setSelectedImageUrl] = useState('');
-    const [selectedValue, setSelectedValue] = useState('');
-
-
-    // const [editingIndex, setEditingIndex] = useState(null);
-    // const [searchTerm, setSearchTerm] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [inactiveTableData, setInactiveTableData] = useState([])
     // const [statusFilter, setStatusFilter] = useState('All'); // 'All', 'Pending', 'Completed', 'In Progress', 'Cancelled'
+
+    const navigate = useNavigate();
     const [selectedUserIndex, setSelectedUserIndex] = useState(-1); // Initialize with -1
-    const [selectedOption, setSelectedOption] = useState(''); // State to store selected option
-
-    // Define options for the dropdown
-    const options = [
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' },
-        // Add more options as needed
-    ];
-
-    // Event handler for dropdown change
-    const handleDropdownChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
-
     const handleEditClick = (index) => {
         setSelectedUserIndex(index); // Set the selected user index
     };
@@ -42,25 +21,9 @@ function AdminPanelTable() {
         setSelectedUserIndex(-1); // Reset the selected user index to close the modal
     };
 
-    const handleImageClick = (imageUrl) => {
-        setSelectedImageUrl(imageUrl);
-        setViewerOpen(!viewerOpen);
-    };
 
 
-    const handleReset = (e) => {
-        e.preventDefault()
-        console.log("hwyy");
-        setStartDate('');
-        setEndDate('');
-    };
-    const handleStartDateChange = (event) => {
-        setStartDate(event.target.value);
-    };
 
-    const handleEndDateChange = (event) => {
-        setEndDate(event.target.value);
-    };
 
     const renderedActiveTableRows = activeTableData.map((data, index) => (
         <TableRow key={index}>
@@ -159,7 +122,7 @@ function AdminPanelTable() {
 
     return (
         <>
-            <section style={{ paddingTop: '5rem' }} className="content">
+            {/* <section style={{ paddingTop: '5rem' }} className="content">
                 <div className="container-fluid" style={{ marginTop: '-35px' }}>
                     <div className="row">
                         <div className="col-12 mt-5">
@@ -223,7 +186,7 @@ function AdminPanelTable() {
                                             <center>
                                                 <button className="btn btn-primary" style={{}} >Search Now</button>
                                                 <button className='btn btn-success' type='button' style={{ marginLeft: 20, textAlign: 'center' }} onClick={handleReset}>Reset</button>
-                                                {/* <button onClick={handleReset}>Reset</button> */}
+
                                             </center>
                                         </div>
                                         <br />
@@ -233,34 +196,73 @@ function AdminPanelTable() {
                         </div>
                     </div>
                 </div>
-            </section >
-            <section style={{ paddingTop: '5rem' }} className="content">
-                <div className="container-fluid" style={{ marginTop: '-35px' }}>
-                    <div className="row">
-                        <div className="col-12 mt-5">
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="single-table">
-                                        <div id="active_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                            <div className="table-responsive">
-                                                <Table>
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell>Sr No.</TableCell>
-                                                            <TableCell>Name</TableCell>
-                                                            <TableCell>Username</TableCell>
-                                                            <TableCell>Phone</TableCell>
-                                                            <TableCell>Email</TableCell>
-                                                            <TableCell>Status</TableCell>
-                                                            <TableCell>Edit Permission</TableCell>
-                                                            <TableCell>Date</TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>{renderedActiveTableRows}</TableBody>
-                                                </Table>
+            </section > */}
+            <div className='fade-in'>
+            <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+                <h3 style={{ color: 'white' }}>Admin Manager</h3>
+            </div>
+            <section style={{ marginTop: '5rem', borderRadius: '5px', background: '#a6a6ff' }} >
+                <button style={{ margin: '2rem' }} type="button" class="btn  hoverbutton" onClick={() => navigate('/register')} >Create Admin</button>
+                <section style={{ paddingTop: '5rem' }} className="content">
+                    <div className="container-fluid" style={{ marginTop: '-35px' }}>
+                        <div className="row">
+                            <div className="col-12 mt-5">
+                                <div className="card">
+                                    <div style={{ background: 'white' }} className="card-body">
+                                        <div className="single-table">
+                                            <div id="active_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                <div className="table-responsive">
+                                                    <Table sx={{ background: 'white' }} >
+                                                        <TableHead>
+                                                            <TableRow sx={{ background: 'white  ' }}>
+                                                                <TableCell>Sr No.</TableCell>
+                                                                <TableCell>Name</TableCell>
+                                                                <TableCell>Username</TableCell>
+                                                                <TableCell>Phone</TableCell>
+                                                                <TableCell>Email</TableCell>
+                                                                <TableCell>Status</TableCell>
+                                                                <TableCell>Edit Permission</TableCell>
+                                                                <TableCell>Date</TableCell>
+                                                            </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>{renderedActiveTableRows}</TableBody>
+                                                    </Table>
+                                                </div>
+                                                <div className="dataTables_info" id="active_table_info" role="status" aria-live="polite">
+                                                    Showing {activeTableData.length} active entries
+                                                </div>
                                             </div>
-                                            <div className="dataTables_info" id="active_table_info" role="status" aria-live="polite">
-                                                Showing {activeTableData.length} active entries
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div >
+                        <div className="row">
+                            <div className="col-12 mt-5">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="single-table">
+                                            <div id="inactive_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                <div className="table-responsive">
+                                                    <Table>
+                                                        <TableHead>
+                                                            <TableRow>
+                                                                <TableCell>Sr No.</TableCell>
+                                                                <TableCell>Name</TableCell>
+                                                                <TableCell>Username</TableCell>
+                                                                <TableCell>Phone</TableCell>
+                                                                <TableCell>Email</TableCell>
+                                                                <TableCell>Status</TableCell>
+                                                                <TableCell>Edit Permission</TableCell>
+                                                                <TableCell>Date</TableCell>
+                                                            </TableRow>
+                                                        </TableHead>
+                                                        <TableBody>{renderedInactiveTableRows}</TableBody>
+                                                    </Table>
+                                                </div>
+                                                <div className="dataTables_info" id="inactive_table_info" role="status" aria-live="polite">
+                                                    Showing {inactiveTableData.length} inactive entries
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -268,40 +270,9 @@ function AdminPanelTable() {
                             </div>
                         </div>
                     </div >
-                    <div className="row">
-                        <div className="col-12 mt-5">
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="single-table">
-                                        <div id="inactive_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                            <div className="table-responsive">
-                                                <Table>
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell>Sr No.</TableCell>
-                                                            <TableCell>Name</TableCell>
-                                                            <TableCell>Username</TableCell>
-                                                            <TableCell>Phone</TableCell>
-                                                            <TableCell>Email</TableCell>
-                                                            <TableCell>Status</TableCell>
-                                                            <TableCell>Edit Permission</TableCell>
-                                                            <TableCell>Date</TableCell>
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>{renderedInactiveTableRows}</TableBody>
-                                                </Table>
-                                            </div>
-                                            <div className="dataTables_info" id="inactive_table_info" role="status" aria-live="polite">
-                                                Showing {inactiveTableData.length} inactive entries
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div >
-            </section >
+                </section >
+            </section>
+            </div>
         </>
     );
 }

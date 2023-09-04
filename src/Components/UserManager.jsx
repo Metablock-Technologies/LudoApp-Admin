@@ -3,11 +3,14 @@ import * as FileSaver from 'file-saver';
 import axios from 'axios';
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import jsPDF from "jspdf"
+import { TablePagination } from '@mui/material';
 
 function UserManager() {
   const [blockedUsers, setBlockedUsers] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const tableData = [
     {
@@ -252,8 +255,21 @@ function UserManager() {
     },
   ];
 
+// pagination part 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
+  // Calculate the index range for the current page
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  // pagination part 
   const handleBlockUser = async (userId) => {
     try {
       const response = await axios.post('/api/block-user', { userId }); // Adjust the URL
@@ -295,20 +311,18 @@ function UserManager() {
 
 
 
-  const renderedTableRows = filteredData.map((data, index) => (
+  const renderedTableRows = filteredData.slice(startIndex,endIndex).map((data, index) => (
     <tr role="row" key={index}>
       <td>{data.number}</td>
       <td>{data.name}</td>
       <td>{data.mobile}</td>
       <td>{data.balance}</td>
-      <td>{data.miss_match}</td>
-      <td>{data.game_hold}</td>
-      <td>{data.refer_by}</td>
       <td>{data.refer_by}</td>
       <td>{data.username}</td>
       <td>{data.password}</td>
       <td>
         <button
+
           className="btn btn-danger"
           onClick={() => handleBlockUser(data.number)} // Pass the user ID to the function
         >
@@ -319,15 +333,18 @@ function UserManager() {
     </tr>
   ));
   return (
-    <>
-      <section style={{ paddingTop: '5rem' }} className="content">
+    <> <div className='fade-in'>
+      <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+        <h3 style={{ color: 'white' }}>User Manager</h3>
+      </div>
+      <section style={{ marginTop: '2rem' }} className="content">
 
         <div className="container-fluid" style={{ marginTop: '-35px' }}>
           <div className="row">
             {/* Primary table start */}
             <div className="col-12 mt-5">
               <div className="card">
-                <div className="card-body">
+                <div style={{ background: '#a6a6ff' }} className="card-body">
                   <form >
                     <input type="hidden" name="_token" defaultValue="ufIIKQky4pOtOxFVX1zXKHf58iF6SEHdlPsJf3tm" />
                     <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
@@ -357,10 +374,46 @@ function UserManager() {
                       </div>
                     </div>
                     <div style={{ clear: 'both' }} />
-                    <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
-                      <label htmlFor="validationCustomUsername">Search  User</label>
-                      <div className="input-group">
-                        <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                    <div className='row'>
+                      <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                        <label htmlFor="validationCustomUsername">Search </label>
+                        <div className="input-group">
+                          <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                        </div>
+                      </div>
+                      <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                        <div id="table_id_filter" className="dataTables_filter">
+                          <label>
+                            Filter by Status:
+
+                          </label>
+                          <select
+
+                            // value={statusFilter}
+                            // onChange={handleStatusFilterChange}
+                            style={{ height: "37px" }}
+                            className="form-control form-control-sm "
+                          >
+                            <option value="all">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="approved">Approved</option>
+                          </select>
+                        </div>
+                        {/* <label>Select an Option:</label>
+                                            <select
+                                                className="form-control"
+                                                value={selectedOption}
+                                                onChange={handleDropdownChange}
+                                                name="dropdownOption"
+                                            >
+                                                <option value="">Select an option</option>
+                                                {options.map(option => (
+                                                    <option key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </option>
+                                                ))}
+                                            </select> */}
                       </div>
                     </div>
                     <div style={{ clear: 'both' }} />
@@ -368,7 +421,7 @@ function UserManager() {
                     <br />
                     <div className="col-md-12 mb-12">
                       <center>
-                        <button className="btn btn-primary" style={{}} >Search Now</button>
+                        <button className="btn btn-primary" type='button'>Search Now</button>
                         <button className='btn btn-success' type='button' style={{ marginLeft: 20, textAlign: 'center' }} onClick={handleReset}>Reset</button>
                         {/* <button onClick={handleReset}>Reset</button> */}
                       </center>
@@ -379,16 +432,9 @@ function UserManager() {
                     <div className="table-responsive">
                       {/* fund history */}
                       <div id="table_id_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                        <div className="dt-buttons btn-group flex-wrap">
 
-                          <button className="btn btn-secondary buttons-pdf buttons-html5" tabIndex={0} aria-controls="table_id" type="button"      ><span>PDF</span></button>
-                          <button className="btn btn-secondary buttons-excel buttons-html5" tabIndex={0} aria-controls="table_id" type="button"><span>Excel</span></button>
-                          <button className="btn btn-secondary buttons-csv buttons-html5" tabIndex={0} aria-controls="table_id" type="button"><span>CSV</span></button>
-                          <button className="btn btn-secondary buttons-print" tabIndex={0} aria-controls="table_id" type="button"><span>Print</span></button>
-                        </div>
-                        <div id="table_id_filter" className="dataTables_filter">
-                          <label>Search:<input type="search" className="form-control form-control-sm" placeholder aria-controls="table_id" /></label></div>
-                        <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{ width: 1070 }}>
+                       
+                        <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{}}>
                           <thead className="text-capitalize">
 
                             {/* <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">SR. NO.</th> */}
@@ -397,8 +443,6 @@ function UserManager() {
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Name </th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Mobile </th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 105 }} aria-label="To User: activate to sort column ascending">Balance</th>
-                              <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 175 }} aria-label="To User Name: activate to sort column ascending">Miss Match</th>
-                              <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 109 }} aria-label="Amount: activate to sort column ascending">Game Hold</th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 129 }} aria-label="Date: activate to sort column ascending">Refer By</th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Username</th>
                               <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Password </th>
@@ -410,20 +454,24 @@ function UserManager() {
                             {renderedTableRows}
                           </tbody>
                         </table>
-                        <div className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                          Showing 1 to 2 of 2 entries
-                        </div>
-                        <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                          <ul className="pagination"><li className="paginate_button page-item previous disabled" id="table_id_previous">
-                            <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
-                              Previous
-                            </a></li><li className="paginate_button page-item active">
-                              <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a></li><li className="paginate_button page-item next disabled" id="table_id_next"><a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a></li></ul></div></div>
+                       
+                      </div>
                       <br /><br />
                       <center>
                         <div>
                         </div>
                       </center>
+                      <div className="pagination-container">
+                        <TablePagination sx={{color:'purple'}}
+                          rowsPerPageOptions={[5, 10, 25]}
+                          component="div"
+                          count={filteredData.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                      </div>
                       {/* fund history */}
                     </div>
                   </div>
@@ -431,90 +479,14 @@ function UserManager() {
               </div>
             </div>
             {/* Primary table end */}
+            
           </div>
         </div>
       </section>
+        </div>
 
     </>
   )
 }
 
 export default UserManager;
-
-
-
-// //<div className='container'>
-//         <div className='container1'>
-//           <select className='select' style={{ marginTop: "10%" }} value={selectedField} onChange={(e) => setSelectedField(e.target.value)}>
-//             <option value="number">Number</option>
-//             <option value="name">Name</option>
-//             <option value="mobile">Mobile</option>
-//             <option value="balance">Balance</option>
-//             <option value="missMatch">Miss Match</option>
-//             <option value="gameHold">Game Hold</option>
-//             <option value="referBy">Refer by</option>
-//             <option value="kyc">KYC</option>
-//           </select>
-//           < input className='input'
-//             type="text"
-//             value={searchQuery}
-//             onChange={(e) => setSearchQuery(e.target.value)}
-//             placeholder={`Search by ${selectedField}`}
-//           /> </div>
-
-//         <Box sx={{
-//           marginTop: "5%", width: "100%"
-//         }}>
-
-//           <div className="container-mt-4">
-//             < table className='User-table'>
-//               <thead>
-//                 <tr  className='table-row' >
-//                   <th >Number</th>
-//                   <th>Name</th>
-//                   <th>Mobile</th>
-//                   <th>Balance</th>
-//                   <th>Miss Match</th>
-//                   <th>Game Hold</th>
-//                   <th>Refer by</th>
-//                   <th>KYC</th>
-//                   <th>Username</th>
-//                   <th>Password</th>
-//                   <th>Action</th>
-//                 </tr>
-//               </thead>
-
-//               <tbody >
-
-//                 {filteredData.map((user) => (
-//                   <tr  key={user.number}>
-
-//                     <td className='number'>{user.number}</td>
-//                     <td className='name'>{user.name}</td>
-//                     <td className='mobile'>{user.mobile}</td>
-//                     <td className='balance'>{user.balance}</td>
-//                     <td className='missMatch'>{user.missMatch ? 'Yes' : 'No'}</td>
-//                     <td className='gamehold'>{user.gameHold ? 'Yes' : 'No'}</td>
-//                     <td className='referby'>{user.referBy}</td>
-//                     <td>
-//                       <div className="kyc">{user.kyc ? 'Verified' : 'Unverified'}</div>
-//                     </td>
-//                     <td className='username'>{user.username}</td>
-//                     <td className='password'>{user.password}</td>
-//                     <td>
-//                       {user.blocked ? (
-//                         <div className="static-button">Blocked</div>
-//                       ) : (
-//                         <button onClick={() => blockUser(user.number)}>Block</button>
-//                       )}
-//                     </td>
-//                   </tr>
-//                 ))}
-
-
-//               </tbody>
-//             </table>
-//           </div>
-
-//         </Box >
-//       </div >

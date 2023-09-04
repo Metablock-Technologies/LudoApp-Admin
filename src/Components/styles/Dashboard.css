@@ -1,7 +1,7 @@
 .small-box{
    width: 320px;
    padding: 20px;
-   margin-left: 10px;
+   margin-left: 5px;
  
    animation: fadeInOut 1s;
 }
@@ -114,3 +114,29 @@ h2{  font-size: 15px !important;
     min-height: 64px;
     background-color: #371b58;
 }}
+#icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.color-changing-icon {
+  animation: colorAnimation 3s infinite;
+}
+
+@keyframes colorAnimation {
+  0% {
+    color: red;
+  }
+  50% {
+    color: lightgreen;
+  }
+  100% {
+    color: red;
+  }
+}
+
+
+
+

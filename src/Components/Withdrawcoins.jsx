@@ -15,6 +15,7 @@ function Withdrawcoins() {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+
     // Define options for the dropdown
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -108,6 +109,7 @@ function Withdrawcoins() {
             <td>
                 <TextField
                     type="text"
+                    style={{ color: 'white' }}
                     placeholder="Enter message"
                     variant="outlined"
                     size="small"
@@ -137,15 +139,22 @@ function Withdrawcoins() {
 
     ));
 
+
+
     return (
+
         <>
+            <div className='fade-in'>
+            <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+                <h3 style={{ color: 'white' }}> Withdraw Payment</h3>
+            </div>
             <section style={{ paddingTop: '5rem' }} className="content">
                 <div className="container-fluid" style={{ marginTop: '-35px' }}>
                     <div className="row">
                         {/* Primary table start */}
                         <div className="col-12 mt-5">
                             <div className="card">
-                                <div className="card-body">
+                                <div style={{ background: '#a6a6ff' }} className="card-body">
                                     <form >
                                         <input type="hidden" name="_token" defaultValue="ufIIKQky4pOtOxFVX1zXKHf58iF6SEHdlPsJf3tm" />
                                         <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
@@ -173,17 +182,37 @@ function Withdrawcoins() {
                                                         onChange={handleEndDateChange} />
                                                 </div>
                                             </div>
+
                                         </div>
+
                                         <div style={{ clear: 'both' }} />
-                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
-                                            <label htmlFor="validationCustomUsername">Search  User</label>
-                                            <div className="input-group">
-                                                <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                                        <div className='row'>
+                                            <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                                <label htmlFor="validationCustomUsername">Search </label>
+                                                <div className="input-group">
+                                                    <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div style={{ clear: 'both' }} />
-                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
-                                            <label>Select an Option:</label>
+                                            <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                                <div id="table_id_filter" className="dataTables_filter">
+                                                    <label>
+                                                        Filter by Status:
+
+                                                    </label>
+                                                    <select
+
+                                                        value={statusFilter}
+                                                        onChange={handleStatusFilterChange}
+                                                        style={{ height: "37px" }}
+                                                        className="form-control form-control-sm "
+                                                    >
+                                                        <option value="all">All</option>
+                                                        <option value="pending">Pending</option>
+                                                        <option value="rejected">Rejected</option>
+                                                        <option value="approved">Approved</option>
+                                                    </select>
+                                                </div>
+                                                {/* <label>Select an Option:</label>
                                             <select
                                                 className="form-control"
                                                 value={selectedOption}
@@ -196,8 +225,13 @@ function Withdrawcoins() {
                                                         {option.label}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
+                                            </div>
                                         </div>
+
+                                        <div style={{ clear: 'both' }} />
+
+
                                         <div style={{ clear: 'both' }} />
                                         <br />
                                         <div className="col-md-12 mb-12">
@@ -212,23 +246,9 @@ function Withdrawcoins() {
                                     <div className="single-table">
                                         {/* fund history */}
                                         <div id="table_id_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                            <div id="table_id_filter" className="dataTables_filter">
-                                                <label>
-                                                    Filter by Status:
-                                                    <select
-                                                        value={statusFilter}
-                                                        onChange={handleStatusFilterChange}
-                                                        className="form-control form-control-sm"
-                                                    >
-                                                        <option value="all">All</option>
-                                                        <option value="pending">Pending</option>
-                                                        <option value="rejected">Rejected</option>
-                                                        <option value="approved">Approved</option>
-                                                    </select>
-                                                </label>
-                                            </div>
+
                                             <div className="table-responsive">
-                                                <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{ width: 1070 }}>
+                                                <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{}}>
                                                     <thead className="text-capitalize">
 
                                                         {/* <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">SR. NO.</th> */}
@@ -249,15 +269,26 @@ function Withdrawcoins() {
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                                                Showing 1 to 2 of 2 entries
+                                            <div className="pagination-container">
+                                                <div style={{ marginRight: '6px' }} className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
+                                                    <span style={{ fontSize: '1rem' }}>  Showing 1 to 2 of 2 entries</span>
+                                                </div>
+                                                <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
+                                                    <ul className="pagination">
+                                                        <li className="paginate_button page-item previous disabled" id="table_id_previous">
+                                                            <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
+                                                                Previous
+                                                            </a>
+                                                        </li>
+                                                        <li className="paginate_button page-item active">
+                                                            <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a>
+                                                        </li>
+                                                        <li className="paginate_button page-item next disabled" id="table_id_next">
+                                                            <a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                                                <ul className="pagination"><li className="paginate_button page-item previous disabled" id="table_id_previous">
-                                                    <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
-                                                        Previous
-                                                    </a></li><li className="paginate_button page-item active">
-                                                        <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a></li><li className="paginate_button page-item next disabled" id="table_id_next"><a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a></li></ul></div>
                                             <br /><br />
                                             <center>
                                                 <div>
@@ -273,6 +304,7 @@ function Withdrawcoins() {
                     </div>
                 </div>
             </section>
+            </div>
 
         </>
     )

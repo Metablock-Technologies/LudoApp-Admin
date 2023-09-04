@@ -9,10 +9,12 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import SavingsIcon from '@mui/icons-material/Savings';
 import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import "./styles/Dashboard.css";
 import { Box } from '@mui/material';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 import CountUp from 'react-countup';
-
+import DataThresholdingIcon from '@mui/icons-material/DataThresholding';
 import { baseURL } from '../token';
 import axios from 'axios';
 
@@ -91,7 +93,7 @@ function Dashboard() {
                                 <h3> <CountUp end={data.totalUsers} duration={5} /> </h3>
                             </div>
                             <div>
-                                <h2><CountUp end={totalUsersAvarage} duration={5} />% than last week</h2>
+                                <h2><CountUp end={totalUsersAvarage} duration={5} />% then last week</h2>
                             </div>
                             <div className="icon">
                                 < PublicIcon sx={{ color: "#6e6efe" }} className="fas fa-shopping-cart" />
@@ -105,7 +107,7 @@ function Dashboard() {
                                 <h3><CountUp end={todayUser} duration={5} /></h3>
 
                             </div>
-                            <h2> <CountUp end={todayUserAvarage} duration={8} />% than last week</h2>
+                            <h2> <CountUp end={todayUserAvarage} duration={8} />% then last week</h2>
                             <div className="icon">
                                 <AccountCircleRoundedIcon sx={{ color: "#5ea552" }} className="fas fa-shopping-cart" />
                             </div>
@@ -116,7 +118,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={data.blockedUsers} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={blockUsersAvarage} duration={5} />% than last week</h2>
+                            <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2>
                             <div className="icon">
                                 <AppBlockingRoundedIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
                             </div>
@@ -126,7 +128,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={activeUsers} duration={5} /></h3>
                             </div>
-                            <h2>{activeUsersAvarage}% than last week</h2>
+                            <h2>{activeUsersAvarage}% then last week</h2>
                             <div className="icon">
                                 < RecordVoiceOverIcon sx={{
                                     color: "#14eb62", animation: 'blinkingEffect 1s infinite',
@@ -143,7 +145,7 @@ function Dashboard() {
                 </section>
                 <section className='section'>
                     <div className="container-heading">
-                        <h1>Challenge OverView</h1>
+                        <h1>Challenge Overview</h1>
                     </div>
                     <div className="main-small-box">
                         <div className="small-box bg-info">
@@ -152,7 +154,7 @@ function Dashboard() {
                                 <h3><CountUp end={data.completedChallenges} duration={5} /></h3>
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% than last week</h2>
+                                <h2>{totalUsersAvarage}% then last week</h2>
                             </div>
                             <div className="icon">
                                 < HowToRegIcon className="fas fa-shopping-cart" />
@@ -165,7 +167,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={data.createdChallenges} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={todayUserAvarage} duration={5} />% than last week</h2>
+                            <h2><CountUp end={todayUserAvarage} duration={5} />% then last week</h2>
                             <div className="icon">
                                 < RunningWithErrorsIcon className="fas fa-shopping-cart" />
                             </div>
@@ -175,7 +177,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={data.ongoingChallenges} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={blockUsersAvarage} duration={5} />% than last week</h2>
+                            <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2>
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -187,7 +189,7 @@ function Dashboard() {
                                 <h3><CountUp end={data.cancelledChallenges} duration={5} /></h3>
 
                             </div>
-                            <h2>{<CountUp end={activeUsersAvarage} duration={5} />}% than last week</h2>
+                            <h2>{<CountUp end={activeUsersAvarage} duration={5} />}% then last week</h2>
                             <div className="icon">
                                 < CancelIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
                             </div>
@@ -211,10 +213,10 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% than last week</h2>
+                                <h2>{totalUsersAvarage}% then last week</h2>
                             </div>
                             <div className="icon">
-                                < CurrencyRupeeIcon className="fas fa-shopping-cart" />
+                                < CurrencyRupeeIcon sx={{color:'green'}} className="fas fa-shopping-cart" />
                             </div>
                             <div>
 
@@ -226,9 +228,9 @@ function Dashboard() {
                                 <h3>{data.todayDeposits}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% than last week</h2>
+                            <h2>{todayUserAvarage}% then last week</h2>
                             <div className="icon">
-                                <SavingsIcon className="fas fa-shopping-cart" />
+                                <SavingsIcon sx={{color:'pink'}} className="fas fa-shopping-cart" />
                             </div>
 
                         </div>
@@ -239,7 +241,7 @@ function Dashboard() {
                                 <h3>{data.rangeDeposits}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% than last week</h2>
+                            <h2>{blockUsersAvarage}% then last week</h2>
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -252,7 +254,7 @@ function Dashboard() {
                 </section>
                 <section className='section'>
                     <div className="container-heading">
-                        <h1> Withdraw OverView</h1>
+                        <h1> Withdraw Overview</h1>
                     </div>
 
 
@@ -266,10 +268,10 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% than last week</h2>
+                                <h2>{totalUsersAvarage}% then last week</h2>
                             </div>
                             <div className="icon">
-                                < PriceCheckIcon className="fas fa-shopping-cart" />
+                                < PriceCheckIcon sx={{color:'lightgreen'}} className="fas fa-shopping-cart" />
                             </div>
                             <div>
 
@@ -281,9 +283,9 @@ function Dashboard() {
                                 <h3>{data.todayWithdraw}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% than last week</h2>
+                            <h2>{todayUserAvarage}% then last week</h2>
                             <div className="icon">
-                                <i class="fas fa-shopping-cart" />
+                                <CurrencyExchangeIcon className="fas fa-shopping-cart" />
                             </div>
 
                         </div>
@@ -293,7 +295,7 @@ function Dashboard() {
                                 <h3>{data.rangeWithdraw}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% than last week</h2>
+                            <h2>{blockUsersAvarage}% then last week</h2>
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -304,7 +306,7 @@ function Dashboard() {
                 </section>
                 <section className='section'>
                     <div className="container-heading">
-                        <h1> Commission OverView</h1>
+                        <h1> Commission Overview</h1>
                     </div>
 
 
@@ -318,10 +320,10 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% than last week</h2>
+                                <h2>{totalUsersAvarage}% then last week</h2>
                             </div>
-                            <div className="icon">
-                                <i className="fas fa-shopping-cart" />
+                            <div id='icon-container' className="icon">
+                                <InsertChartIcon className="color-changing-icon" />
                             </div>
                             <div>
 
@@ -333,9 +335,9 @@ function Dashboard() {
                                 <h3>{data.todayCommission}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% than last week</h2>
-                            <div className="icon">
-                                <i className="fas fa-shopping-cart" />
+                            <h2>{todayUserAvarage}% then last week</h2>
+                            <div  className="icon">
+                                <DataThresholdingIcon className="color-changings-icons" />
                             </div>
 
                         </div>
@@ -345,7 +347,7 @@ function Dashboard() {
                                 <h3>{data.penaltyCoins}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% than last week</h2>
+                            <h2>{blockUsersAvarage}% then last week</h2>
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>

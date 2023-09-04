@@ -5080,6 +5080,7 @@ input[type="button"].btn-block {
 }
 
 .card-body {
+        background: linear-gradient(124deg, blue, transparent) !important;
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     min-height: 1px;
@@ -19539,7 +19540,9 @@ html.maximized-card {
 .table.text-center td,
 .table.text-center th {
     text-align: center;
+   
 }
+
 
 .table.table-valign-middle thead>tr>th,
 .table.table-valign-middle thead>tr>td,

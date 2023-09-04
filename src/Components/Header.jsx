@@ -6,7 +6,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import Divider from '@mui/material/Divider';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -21,30 +20,28 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LineStyleIcon from '@mui/icons-material/LineStyle';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import MoneyOffIcon from '@mui/icons-material/MoneyOff';
 import GavelIcon from '@mui/icons-material/Gavel';
-import { Login, Settings } from '@mui/icons-material';
-import { PersonAdd } from '@mui/icons-material';
-
+import { Settings } from '@mui/icons-material';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import { Avatar } from '@mui/material';
 import Challenge from './Challenge';
 import AdminEarning from './AdminEarning';
 import UserManager from './UserManager';
+import AdminLoginPage from "./Authentication/LoginPage"
+import Setting from './Setting';
 import AdminManager from './AdminManager';
 import EditPermission from './Permissions/EditPermission';
 import AdminProfile from './AdminProfile';
-import NewTransaction from './NewTransaction';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Addcoins from './Addcoins';
 import Withdrawcoins from './Withdrawcoins';
+import AvatarMenu from "./AvatarMenu";
 import GameJudgement from './GameJudgement';
-import AdminLoginPage from './Authentication/LoginPage';
 import AdminRegistrationPage from './Authentication/CreateAdmin';
+
 
 
 const drawerWidth = 240;
@@ -79,23 +76,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
 }));
 
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
+
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -117,10 +98,34 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Header() {
     const [openDrawer, setOpenDrawer] = useState(false);
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
+    const [swidth, setWidth] = useState(window.innerWidth);
     const navigate = useNavigate();
-    // const [selectedOption, setSelectedOption] = React.useState('View all users');
 
+
+
+
+    // const [selectedOption, setSelectedOption] = React.useState('View all users');
+    const AppBar = styled(MuiAppBar, {
+
+
+        shouldForwardProp: (prop) => prop !== 'open',
+
+    })(({ theme, open }) => ({
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(open && swidth > 768 && {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+            transition: theme.transitions.create(['width', 'margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        }),
+    }));
     // const options = [
     //     'View all users',
     //     'Add new users',
@@ -132,204 +137,238 @@ export default function Header() {
     // const handleOptionChange = (event) => {
     //     setSelectedOption(event.target.value);
     // };
+    //const container = window !== undefined ? () => window().document.body : undefined;
+    useEffect(() => {
+        function handleWindowResize() {
+            setWidth(window.innerWidth)
+        }
+        window.addEventListener('resize', handleWindowResize);
+        console.log(swidth)
+        return () => window.removeEventListener('resize', handleWindowResize);
+    }, []);
+
+
+    const handleBackdropClick = () => {
+        if (swidth <= 768) {
+            setOpenDrawer(false);
+            setOpen(false);
+        }
+    };
     const handleDrawerOpen = () => {
         setOpenDrawer(!openDrawer);
         setOpen(true);
     };
 
     const handleDrawerClose = () => {
-
         setOpenDrawer(false);
         setOpen(false);
     };
 
-    return (
-        <div className="container-section">
-            <Box sx={{
-                display: 'flex', animation: `$fadeInOut} 1s`,
-                transition: '0.8s !important',
-                transitionDuration: '0.9s !important',
-                transitionTimingFunction: 'ease !important',
-            }}>
-                {/* <CssBaseline /> */}
-                <AppBar sx={{ justifyContent: "space-between" }} position="fixed" open={open}>
-                    <Toolbar sx={{ justifyContent: "space-between", background: " #00064b " }}>
-                        <IconButton
-                            color="white"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
+    const drawer = (
+        <>
+            <DrawerHeader style={{ backgroundColor: " #00064b" }}>
+                <IconButton onClick={handleDrawerClose}>
+                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon sx={{ color: "white" }} />}
+                </IconButton>
+            </DrawerHeader>
+            <Divider sx={{ background: 'black' }} />
+            <List>
+
+            </List>
+            <Divider />
+            <List className='main-list' sx={{ color: "white", fontWeight: "500", backgroundColor: "#00064b" }}>
+                {/* <ListItem disablePadding sx={{ display: 'block' }} >
+                                <ListItemButton
+                                    sx={{
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2.5,
+                                    }}
+                                    onClick={() => navigate("/register")}  >
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 3 : 'auto',
+                                            justifyContent: 'center',
+                                        }}
+
+                                    >
+                                        <PersonAdd sx={{ color: "blue", fontSize: "30px" }} />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Create Admin" sx={{ opacity: open ? 1 : 0 }} />
+                                </ListItemButton>
+                            </ListItem>
+                            */}
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate("/")}  >
+                        <ListItemIcon
                             sx={{
-                                color: "white",
-                                marginRight: 5,
-                                ...(open && { display: 'none' }),
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+
+                        >
+                            <LineStyleIcon sx={{ color: "blue", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/AdminProfile')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
                             }}
                         >
-                            <MenuIcon />
-                        </IconButton>
-                        <Avatar sx={{ position: "inherit", color: "lightBlue", background: "#22009b" }} />
-                    </Toolbar>
-                </AppBar>
 
-                <Drawer sx={{ background: '#00064b' }} variant="permanent" open={open}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon sx={{ color: "white" }} />}
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider sx={{ background: 'black' }} />
-                    <List>
+                            <ManageAccountsIcon sx={{ color: "#00eaff", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Admin Profile" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
 
-                    </List>
-                    <Divider />
-                    <List className='main-list' sx={{ color: "white", fontWeight: "500", backgroundColor: "#00064b" }}>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate("/register")}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/AdminManager')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                                >
-                                    <PersonAdd sx={{ color: "blue", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Create Admin" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate("/login")}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
+                            <AdminPanelSettingsIcon sx={{ color: "red", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Admin Manager" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/AdminEarning')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                                >
-                                    <Login sx={{ color: "blue", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Login Admin" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate("/")}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
+                            <AttachMoneyIcon sx={{ color: "yellow", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Admin Earning" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/UserManager')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                                >
-                                    <LineStyleIcon sx={{ color: "blue", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/AdminProfile')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
+                            <AccountCircleIcon sx={{ color: "lightBlue", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="User Manager" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
 
-                                    <ManageAccountsIcon sx={{ color: "#00eaff", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Admin Profile" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/Challenge')} >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <SportsEsportsIcon sx={{ color: "lightGreen", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Challenge Manager" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/UserManager')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/Addcoins')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                                    <AccountCircleIcon sx={{ color: "lightBlue", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="User Manager" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/AdminManager')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
+                            <MonetizationOnIcon sx={{ color: "yellow", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Deposit Payments" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/Challenge')} >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <SportsEsportsIcon sx={{ color: "lightGreen", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Challenge Manager" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
 
-                                    <AdminPanelSettingsIcon sx={{ color: "red", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Admin Manager" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        {/* <ListItem disablePadding sx={{ display: 'block' }} >
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/GameJudgement')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <GavelIcon sx={{ color: "yellow", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Conflict Challenges" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+                {/* <ListItem disablePadding sx={{ display: 'block' }} >
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -350,112 +389,96 @@ export default function Header() {
                                 <ListItemText primary="Transcation Manager" sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem> */}
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/AdminEarning')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
 
-                                    <AttachMoneyIcon sx={{ color: "yellow", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Admin Earning" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
 
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/Addcoins')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
 
-                                    <MonetizationOnIcon sx={{ color: "yellow", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Received Payments" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/Withdrawcoins')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/Withdrawcoins')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
 
-                                    <MoneyOffIcon sx={{ color: "yellow", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Withdraw Payments" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/GameJudgement')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <GavelIcon sx={{ color: "yellow", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Conflict Challenges" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding sx={{ display: 'block' }} >
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                                onClick={() => navigate('/settings')}  >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Settings sx={{ color: "yellow", fontSize: "30px" }} />
-                                </ListItemIcon>
-                                <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                </Drawer>
+                            <MoneyOffIcon sx={{ color: "yellow", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Withdraw Payments" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+
+                <ListItem disablePadding sx={{ display: 'block' }} >
+                    <ListItemButton
+                        sx={{
+                            minHeight: 48,
+                            justifyContent: open ? 'initial' : 'center',
+                            px: 2.5,
+                        }}
+                        onClick={() => navigate('/Setting')}  >
+                        <ListItemIcon
+                            sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : 'auto',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Settings sx={{ color: "gray", fontSize: "30px" }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Settings" sx={{ opacity: open ? 1 : 0 }} />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+        </>
+    )
+
+    return (
+        <div className="container-section">
+            <Box sx={{
+                display: 'flex', animation: `$fadeInOut} 1s`,
+                transition: '0.8s !important',
+                transitionDuration: '0.9s !important',
+                transitionTimingFunction: 'ease !important',
+            }}>
+                {/* <CssBaseline /> */}
+                <AppBar sx={{ justifyContent: "space-between" }} position="fixed" open={open} component="nav">
+                    <Toolbar sx={{ justifyContent: "space-between", background: " #00064b " }}>
+                        <IconButton
+                            color="white"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            sx={{
+                                color: "white",
+                                marginRight: 5,
+                                ...(open && { display: 'none' }),
+                            }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <AvatarMenu />
+
+                    </Toolbar>
+
+                </AppBar>
+                <nav>
+                    {
+                        swidth > 768 ? (<Drawer sx={{ background: '#00064b' }} variant="permanent" open={open} >
+                            {drawer}
+                        </Drawer>) : (
+                            <MuiDrawer variant="persistent" sx={{ background: '#00064b' }} open={open} onClick={handleBackdropClick} >
+                                {drawer}
+                            </MuiDrawer>
+                        )
+                    }
+                </nav>
+
                 <Box
                     component="main"
                     sx={{
@@ -472,8 +495,9 @@ export default function Header() {
                 >
 
                     <Routes>
+                        {/* <Route exact path='/' element={<AdminLoginPage />}></Route> */}
                         <Route exact path='/' element={<Dashboard />}></Route>
-                        <Route exact path='/login' element={<AdminLoginPage />}></Route>
+
                         <Route exact path='/register' element={<AdminRegistrationPage />}></Route>
                         <Route exact path='/Challenge' element={<Challenge />}></Route>
                         <Route exact path='/UserManager' element={<UserManager />}></Route>
@@ -485,7 +509,7 @@ export default function Header() {
                         <Route exact path='/Addcoins' element={<Addcoins />}></Route>
                         <Route exact path='/Withdrawcoins' element={<Withdrawcoins />}></Route>
                         <Route exact path='/GameJudgement' element={<GameJudgement />}></Route>
-                        <Route exact path='/settings' element={<Settings />}></Route>
+                        <Route exact path='/Setting' element={<Setting />}></Route>
                     </Routes>
 
                     {/* <Dashboard /> */}
