@@ -257,7 +257,7 @@ function Addcoins() {
                                         <br />
                                         <div className="col-md-12 mb-12">
                                             <center>
-                                                <button className="btn btn-primary" style={{}} >Search Now</button>
+                                                <button className="btn btn-primary" type='button' style={{}} >Search Now</button>
                                                 <button className='btn btn-success' type='button' style={{ marginLeft: 20, textAlign: 'center' }} onClick={handleReset}>Reset</button>
                                                 {/* <button onClick={handleReset}>Reset</button> */}
                                             </center>

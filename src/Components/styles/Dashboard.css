@@ -140,3 +140,70 @@ h2{  font-size: 15px !important;
 
 
 
+.css-1r9jet7 {
+    background-color: #00064b !important;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    padding: 0px 8px;
+    min-height: 56px;
+}
+.css-1ontqvh {
+   background-color: #00064b !important;
+    list-style: none;
+    margin: 0px;
+    padding: 8px 0px;
+    position: relative;
+}
+.css-1l8j5k8 {
+    background-color: #00064b !important;
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1 0 auto;
+    z-index: 1200;
+    position: fixed;
+    top: 0px;
+    outline: 0px;
+    left: 0px;
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.css-hlvchu .MuiDrawer-paper {
+  background-color: #00064b !important;
+    width: 240px;
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow-x: hidden;
+}
+
+.registration-container {
+    background-color: rgb(166 128 249) !important;
+    /* background-color: #5e5196; */
+    /* background-color: #8062D6; */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 2rem;
+        box-shadow: 0px 11px 21px -18px rgb(255 255 255 ) !important;
+}
+
+/* Style for form inputs */
+.MuiFormControl-root {
+    margin-bottom: 1rem !important;
+}
+
+/* Style for the Register button */
+.MuiButton-containedPrimary {
+    background-color: #6200ea !important;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.MuiButton-containedPrimary:hover {
+    background-color: #4700b3 !important;
+}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, IconButton } from '@mui/material';
+import { Pagination, PaginationItem, ArrowBackIcon, ArrowForwardIcon } from '@mui/material';
+
 import { Visibility, Check } from '@mui/icons-material';
 import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
@@ -16,6 +18,9 @@ function GameJudgement() {
     const [endDate, setEndDate] = useState('');
     const [filteredTableData, setFilteredTableData] = useState([]);
     const [showComponent, setShowComponent] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    
 
     useEffect(() => {
         // Delay the animation to allow rendering first
@@ -40,6 +45,17 @@ function GameJudgement() {
         setStartDate('');
         setEndDate('');
     };
+
+
+    //paginations area 
+
+    const ITEMS_PER_PAGE = 10;
+    const totalPages = Math.ceil(filteredTableData.length / ITEMS_PER_PAGE);
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = currentPage * ITEMS_PER_PAGE;
+
+
 
 
     // Define options for the dropdown
@@ -114,7 +130,7 @@ function GameJudgement() {
         gamejudgement();
     }, [])
 
-    const renderedTableRows = filteredTableData.map((data, index) => (
+    const renderedTableRows = filteredTableData.slice(startIndex, endIndex).map((data, index) => (
         <tr key={index}>
             <td>{index + 1}</td>
             <td>{data.roomcode}</td>
@@ -220,6 +236,8 @@ function GameJudgement() {
         </tr>
     ));
 
+
+ 
 
    
     return (
@@ -348,24 +366,22 @@ function GameJudgement() {
                                             </div>
                                             {/* Add pagination */}
                                             <div className="pagination-container">
-                                                <div style={{ marginRight: '6px' }} className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                                                    <span style={{ fontSize: '1rem' }}>  Showing 1 to 2 of 2 entries</span>
-                                                </div>
-                                                <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                                                    <ul className="pagination">
-                                                        <li className="paginate_button page-item previous disabled" id="table_id_previous">
-                                                            <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
-                                                                Previous
-                                                            </a>
-                                                        </li>
-                                                        <li className="paginate_button page-item active">
-                                                            <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a>
-                                                        </li>
-                                                        <li className="paginate_button page-item next disabled" id="table_id_next">
-                                                            <a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        <Pagination
+                                                            count={totalPages}
+                                                            page={currentPage}
+                                                            onChange={(event, page) => setCurrentPage(page)}
+                                                            renderItem={(item) => (
+                                                                <PaginationItem
+                                                                    component="a"
+                                                                    href="#"
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        setCurrentPage(item.page);
+                                                                    }}
+                                                                    {...item}
+                                                                />
+                                                            )}
+                                                        />
                                             </div>
                                         </div>
                                     </div>

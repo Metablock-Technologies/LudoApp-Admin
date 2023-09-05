@@ -2,23 +2,205 @@
 import { Box, Input, MenuItem, Select, colors } from '@mui/material';
 import React, { useState } from 'react'
 import { styled } from '@mui/system';
-import {
-  TablePagination,
-  tablePaginationClasses as classes,
-} from '@mui/base/TablePagination';
+import { Pagination, PaginationItem, ArrowBackIcon, ArrowForwardIcon } from '@mui/material';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Challenge() {
 
 
+  const [currentPage, setCurrentPage] = useState(1);
 
 
-  // const [startDate, setStartDate] = useState('');
-  // const [endDate, setEndDate] = useState('');
+
 
 
   const initialGames = [
+    {
+      id: 1,
+      creater: 'John Doe',
+      accepter: 'Jane Smith',
+      amount: 100,
+      status: 'Completed',
+      gameType: 'Chess',
+      date: '2023-08-04',
+    },
+    {
+      id: 2,
+      creater: 'Alice Johnson',
+      accepter: 'Bob Williams',
+      amount: 50,
+      status: 'Pending',
+      gameType: 'Checkers',
+      date: '2023-08-05',
+    },
+    {
+      id: 3,
+      creater: 'Mike Brown',
+      accepter: 'Laura Lee',
+      amount: 200,
+      status: 'Running',
+      gameType: 'Tic-Tac-Toe',
+      date: '2023-08-06',
+    },
+    {
+      id: 4,
+      creater: 'Sarah Davis',
+      accepter: 'Kevin Martinez',
+      amount: 75,
+      status: 'Completed',
+      gameType: 'Uno',
+      date: '2023-08-07',
+    },
+    {
+      id: 5,
+      creater: 'Chris Jackson',
+      accepter: 'Emma Clark',
+      amount: 30,
+      status: 'Cancelled',
+      gameType: 'Go Fish',
+      date: '2023-08-08',
+    },
+    {
+      id: 1,
+      creater: 'John Doe',
+      accepter: 'Jane Smith',
+      amount: 100,
+      status: 'Completed',
+      gameType: 'Chess',
+      date: '2023-08-04',
+    },
+    {
+      id: 2,
+      creater: 'John Doe',
+      accepter: 'Bob Williams',
+      amount: 50,
+      status: 'Pending',
+      gameType: 'Checkers',
+      date: '2023-08-05',
+    },
+    {
+      id: 3,
+      creater: 'John Doe',
+      accepter: 'Laura Lee',
+      amount: 200,
+      status: 'Running',
+      gameType: 'Tic-Tac-Toe',
+      date: '2023-08-06',
+    },
+    {
+      id: 4,
+      creater: 'John Doe',
+      accepter: 'Kevin Martinez',
+      amount: 75,
+      status: 'Completed',
+      gameType: 'Uno',
+      date: '2023-08-07',
+    },
+    {
+      id: 5,
+      creater: 'John Doe',
+      accepter: 'Emma Clark',
+      amount: 30,
+      status: 'Cancelled',
+      gameType: 'Go Fish',
+      date: '2023-08-08',
+    },
+    {
+      id: 1,
+      creater: 'Alice Johnson',
+      accepter: 'Jane Smith',
+      amount: 100,
+      status: 'Completed',
+      gameType: 'Chess',
+      date: '2023-08-04',
+    },
+    {
+      id: 2,
+      creater: 'Alice Johnson',
+      accepter: 'Bob Williams',
+      amount: 50,
+      status: 'Pending',
+      gameType: 'Checkers',
+      date: '2023-08-05',
+    },
+    {
+      id: 3,
+      creater: 'Alice Johnson',
+      accepter: 'Laura Lee',
+      amount: 200,
+      status: 'Running',
+      gameType: 'Tic-Tac-Toe',
+      date: '2023-08-06',
+    },
+    {
+      id: 4,
+      creater: 'Alice Johnson',
+      accepter: 'Kevin Martinez',
+      amount: 75,
+      status: 'Completed',
+      gameType: 'Uno',
+      date: '2023-08-07',
+    },
+    {
+      id: 5,
+      creater: 'Alice Johnson',
+      accepter: 'Emma Clark',
+      amount: 30,
+      status: 'Cancelled',
+      gameType: 'Go Fish',
+      date: '2023-08-08',
+    },
+    {
+      id: 1,
+      creater: 'John Doe',
+      accepter: 'Jane Smith',
+      amount: 100,
+      status: 'Completed',
+      gameType: 'Chess',
+      date: '2023-08-04',
+    },
+    {
+      id: 2,
+      creater: 'Alice Johnson',
+      accepter: 'Bob Williams',
+      amount: 50,
+      status: 'Pending',
+      gameType: 'Checkers',
+      date: '2023-08-05',
+    },
+    {
+      id: 3,
+      creater: 'Mike Brown',
+      accepter: 'Laura Lee',
+      amount: 200,
+      status: 'Running',
+      gameType: 'Tic-Tac-Toe',
+      date: '2023-08-06',
+    },
+    {
+      id: 4,
+      creater: 'Sarah Davis',
+      accepter: 'Kevin Martinez',
+      amount: 75,
+      status: 'Completed',
+      gameType: 'Uno',
+      date: '2023-08-07',
+    },
+    {
+      id: 5,
+      creater: 'Chris Jackson',
+      accepter: 'Emma Clark',
+      amount: 30,
+      status: 'Cancelled',
+      gameType: 'Go Fish',
+      date: '2023-08-08',
+    },
+    // Add
+    // Add
+    // Add
+    // Add more game objects here
     {
       id: 1,
       creater: 'John Doe',
@@ -217,7 +399,11 @@ function Challenge() {
 
 
 
-  // download the pdf
+
+
+
+
+
 
 
   // Filter the games based on the search term, date range, and status
@@ -227,6 +413,16 @@ function Challenge() {
     const isMatchingStatus = statusFilter === 'All' || game.status === statusFilter;
     return isMatchingCreator && isMatchingDate && isMatchingStatus;
   });
+
+
+  //paginations area 
+
+  const ITEMS_PER_PAGE = 10;
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = currentPage * ITEMS_PER_PAGE;
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -274,7 +470,7 @@ function Challenge() {
     setEditingIndex(null);
   };
 
-  const renderedTableRows = filteredData.map((data, index) => (
+  const renderedTableRows = filteredData.slice(startIndex, endIndex).map((data, index) => (
     <tr role="row" key={index}>
       {/* <td>{data.id}</td> */}
       <td>{data.id}</td>
@@ -443,24 +639,22 @@ function Challenge() {
                           </tfoot>
                         </table>
                         <div className="pagination-container">
-                          <div style={{ marginRight: '6px' }} className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                            <span style={{ fontSize: '1rem' }}>  Showing 1 to 2 of 2 entries</span>
-                          </div>
-                          <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                            <ul className="pagination">
-                              <li className="paginate_button page-item previous disabled" id="table_id_previous">
-                                <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
-                                  Previous
-                                </a>
-                              </li>
-                              <li className="paginate_button page-item active">
-                                <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a>
-                              </li>
-                              <li className="paginate_button page-item next disabled" id="table_id_next">
-                                <a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a>
-                              </li>
-                            </ul>
-                          </div>
+                          <Pagination
+                            count={totalPages}
+                            page={currentPage}
+                            onChange={(event, page) => setCurrentPage(page)}
+                            renderItem={(item) => (
+                              <PaginationItem
+                                component="a"
+                                href="#"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setCurrentPage(item.page);
+                                }}
+                                {...item}
+                              />
+                            )}
+                          />
                         </div>
 
                         {/* <div className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
@@ -485,6 +679,8 @@ function Challenge() {
               </div>
             </div>
             {/* Primary table end */}
+
+           
           </div>
         </div>
       </section>
@@ -528,58 +724,7 @@ function Challenge() {
 
 export default Challenge;
 
-const CustomTablePagination = styled(TablePagination)(
-  ({ theme }) => `
-  & .${classes.spacer} {
-    display: none;
-  }
 
-  & .${classes.toolbar}  {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-
-    @media (min-width: 768px) {
-      flex-direction: row;
-      align-items: center;
-    }
-  }
-
-  & .${classes.selectLabel} {
-    margin: 0;
-  }
-
-  & .${classes.select}{
-    padding: 2px;
-    border-radius: 50px;
-    background-color: transparent;
-
-
-  }
-
-  & .${classes.displayedRows} {
-    margin: 0;
-
-    @media (min-width: 768px) {
-      margin-left: auto;
-    }
-  }
-
-  & .${classes.actions} {
-    padding: 2px;
-    border-radius: 50px;
-    text-align: center;
-  }
-
-  & .${classes.actions} > button {
-    margin: 0 8px;
-    border: transparent;
-    border-radius: 2px;
-    background-color: transparent;
-  }
-  `,
-);
 
         // <div className="container_mt-4">
         //   {/* <div className="table-header"> */}
