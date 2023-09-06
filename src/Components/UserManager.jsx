@@ -18,251 +18,6 @@ function UserManager() {
     const [iconRotation, setIconRotation] = useState(0);
     const [selectedStatus, setSelectedStatus] = useState("");
 
-    //   const tabledata = [
-    //     {
-    //       number: 1,
-    //       name: 'John Doe',
-    //       mobile: '123-456-7890',
-    //       balance: 5000,
-    //       miss_match: 2,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Jane Smith',
-    //       username: 'john123',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 2,
-    //       name: 'Jane Smith',
-    //       mobile: '987-654-3210',
-    //       balance: 7000,
-    //       miss_match: 1,
-    //       game_hold: 'No',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'jane456',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 3,
-    //       name: 'Michael Johnson',
-    //       mobile: '555-555-5555',
-    //       balance: 3000,
-    //       miss_match: 0,
-    //       game_hold: 'Yes',
-    //       refer_by: 'John Doe',
-    //       username: 'michael789',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 4,
-    //       name: 'Emily Davis',
-    //       mobile: '222-333-4444',
-    //       balance: 10000,
-    //       miss_match: 1,
-    //       game_hold: 'No',
-    //       refer_by: 'Jane Smith',
-    //       username: 'emily222',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 5,
-    //       name: 'David Wilson',
-    //       mobile: '777-888-9999',
-    //       balance: 8000,
-    //       miss_match: 3,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'david777',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 6,
-    //       name: 'Sarah Brown',
-    //       mobile: '555-444-3333',
-    //       balance: 12000,
-    //       miss_match: 2,
-    //       game_hold: 'No',
-    //       refer_by: 'Jane Smith',
-    //       username: 'sarah555',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 7,
-    //       name: 'William Jones',
-    //       mobile: '111-222-3333',
-    //       balance: 6000,
-    //       miss_match: 1,
-    //       game_hold: 'Yes',
-    //       refer_by: 'John Doe',
-    //       username: 'william111',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 8,
-    //       name: 'Olivia Green',
-    //       mobile: '444-333-2222',
-    //       balance: 9500,
-    //       miss_match: 0,
-    //       game_hold: 'No',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'olivia444',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 9,
-    //       name: 'James Taylor',
-    //       mobile: '666-777-8888',
-    //       balance: 2000,
-    //       miss_match: 3,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Jane Smith',
-    //       username: 'james666',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 10,
-    //       name: 'Sophia Adams',
-    //       mobile: '111-999-8888',
-    //       balance: 11000,
-    //       miss_match: 2,
-    //       game_hold: 'No',
-    //       refer_by: 'John Doe',
-    //       username: 'sophia111',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 11,
-    //       name: 'Ethan Martinez',
-    //       mobile: '555-222-4444',
-    //       balance: 8000,
-    //       miss_match: 1,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'ethan555',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 12,
-    //       name: 'Ava Hernandez',
-    //       mobile: '777-333-1111',
-    //       balance: 3000,
-    //       miss_match: 0,
-    //       game_hold: 'No',
-    //       refer_by: 'Jane Smith',
-    //       username: 'ava777',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 13,
-    //       name: 'Noah Robinson',
-    //       mobile: '999-888-7777',
-    //       balance: 6000,
-    //       miss_match: 3,
-    //       game_hold: 'Yes',
-    //       refer_by: 'John Doe',
-    //       username: 'noah999',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 14,
-    //       name: 'Mia Ramirez',
-    //       mobile: '333-666-9999',
-    //       balance: 4000,
-    //       miss_match: 2,
-    //       game_hold: 'No',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'mia333',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 15,
-    //       name: 'Liam Anderson',
-    //       mobile: '777-222-4444',
-    //       balance: 8000,
-    //       miss_match: 1,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Jane Smith',
-    //       username: 'liam777',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 16,
-    //       name: 'Isabella Turner',
-    //       mobile: '222-555-9999',
-    //       balance: 9000,
-    //       miss_match: 0,
-    //       game_hold: 'No',
-    //       refer_by: 'John Doe',
-    //       username: 'isabella222',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 17,
-    //       name: 'Benjamin Mitchell',
-    //       mobile: '888-666-4444',
-    //       balance: 5000,
-    //       miss_match: 3,
-    //       game_hold: 'Yes',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'benjamin888',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 18,
-    //       name: 'Grace Lewis',
-    //       mobile: '333-555-9999',
-    //       balance: 7000,
-    //       miss_match: 2,
-    //       game_hold: 'No',
-    //       refer_by: 'Jane Smith',
-    //       username: 'grace333',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 19,
-    //       name: 'Henry Martinez',
-    //       mobile: '666-888-5555',
-    //       balance: 3000,
-    //       miss_match: 1,
-    //       game_hold: 'Yes',
-    //       refer_by: 'John Doe',
-    //       username: 'henry666',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //     {
-    //       number: 20,
-    //       name: 'Luna White',
-    //       mobile: '555-777-9999',
-    //       balance: 9500,
-    //       miss_match: 0,
-    //       game_hold: 'No',
-    //       refer_by: 'Michael Johnson',
-    //       username: 'luna555',
-    //       password: '********',
-    //       action: 'Block'
-    //     },
-    //   ];
-
-    // pagination part 
-
     const fetchAdmindata = async () => {
         try {
             const accessToken = localStorage.getItem('access_token');
@@ -441,6 +196,11 @@ function UserManager() {
             if (searchQuery && !item?.username?.toLowerCase().includes(searchQuery.toLowerCase())) {
                 return false;
             }
+            console.log(item.blocked);
+            console.log(selectedStatus);
+            if (selectedStatus !== "all" && item?.blocked !== (selectedStatus === "true")) {
+                return false;
+            }
 
             return true;
         });
@@ -530,49 +290,52 @@ function UserManager() {
                                     </form> */}
                                     <form role="form" type="submit">
                                         {/* <input type="hidden" name="_token" defaultValue="eLkpGsUBYr9izTDYhoNZCCY6pxm06c8hRkw1N41O" /> */}
-                                        <div className='col-md-6 col-12 mb-3'>
-
-                                            <div className="form-group ">
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <div className="form-group">
                                                 <label>Pick a start date:</label>
                                                 <div className="input-group date" id="datepicker" data-target-input="nearest">
                                                     <input type="date" className="form-control t" placeholder="yyyy-mm-dd" name="start_date" onChange={(e) => setStartDate(e.target.value)} value={startDate} />
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div className="col-md-6 col-12 mb-3" >
-                                                <div className="form-group ">
-                                                    <label>Pick a end date:</label>
-                                                    <div className="input-group date" id="datepicker1" data-target-input="nearest">
-                                                        <input type="date" className="form-control " placeholder="yyyy-mm-dd" name="end_date" onChange={(e) => setEndDate(e.target.value)} value={endDate} />
-                                                    </div>
+                                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                            <div className="form-group">
+                                                <label>Pick a end date:</label>
+                                                <div className="input-group date" id="datepicker1" data-target-input="nearest">
+                                                    <input type="date" className="form-control " placeholder="yyyy-mm-dd" name="end_date" onChange={(e) => setEndDate(e.target.value)} value={endDate} />
                                                 </div>
                                             </div>
                                         </div>
 
 
                                         <div style={{ clear: 'both' }} />
-                                        <div className="col-md-6 col-12 mb-3" >
-                                            <label htmlFor="validationCustomUsername"> User Name</label>
-                                            <div className="input-group">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Username"
-                                                    name="userid"
-                                                    value={searchQuery}
-                                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                                />
+                                        <div className='row'>
+                                            <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                                <div className="form-group">
+                                                    <label htmlFor="validationCustomUsername"> User Name</label>
+                                                    <div className="input-group">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Username"
+                                                            name="userid"
+                                                            value={searchQuery}
+                                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                                        />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-md-6 col-md-12" >
-                                            <label htmlFor="validationCustomUsername">Select id status</label>
-                                            <select className="custom-select selectbox" name="status" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
-                                                <option value> ----Select---- </option>
-                                                <option value="all">All</option>
-                                                <option value="pending">Pending</option>
-                                                <option value="rejected">Rejected</option>
-                                                <option value="approved">Approved</option>
-                                            </select>
+                                            <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                                <div className="form-group">
+                                                    <label htmlFor="validationCustomUsername">Select id status</label>
+                                                    <select className="custom-select selectbox" name="status" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
+                                                        <option value="all">All</option>
+                                                        <option value="false">Blocked</option>
+                                                        <option value="true">UnBlocked</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                         {/* <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
                                                 <label htmlFor="validationCustomUsername">Type</label>

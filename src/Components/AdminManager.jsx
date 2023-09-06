@@ -25,77 +25,92 @@ function AdminPanelTable() {
 
 
 
-    const renderedActiveTableRows = activeTableData.map((data, index) => (
-        <TableRow key={index}>
-            <TableCell>{index + 1}</TableCell>
-            <TableCell>{data.name}</TableCell>
-            <TableCell>{data.username}</TableCell>
-            <TableCell>{data.phone}</TableCell>
-            <TableCell>{data.email}</TableCell>
-            <TableCell>{data.status}</TableCell>
-            <TableCell>
-                <Button onClick={() => handleEditClick(index)}>Edit</Button>
-                {selectedUserIndex === index && (
-                    <div>
-                        <p>Edit Permissions</p>
+    const renderedActiveTableRows = activeTableData.map((data, index) => {
+        const createdAt = new Date(data?.createdAt);
+        const formattedDate = createdAt.toLocaleDateString();
+        const formattedTime = createdAt.toLocaleTimeString();
+        return (
+            <TableRow key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{data.name}</TableCell>
+                <TableCell>{data.username}</TableCell>
+                <TableCell>{data.phone}</TableCell>
+                <TableCell>{data.email}</TableCell>
+                <TableCell>{data.status}</TableCell>
+                <TableCell>
+                    <Button onClick={() => handleEditClick(index)}>Edit</Button>
+                    {selectedUserIndex === index && (
                         <div>
-                            <Checkbox id="permission1" name="permission1" />
-                            <label htmlFor="permission1">Permission 1</label>
+                            <p>Edit Permissions</p>
+                            <div>
+                                <Checkbox id="permission1" name="permission1" />
+                                <label htmlFor="permission1">Permission 1</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission2" name="permission2" />
+                                <label htmlFor="permission2">Permission 2</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission3" name="permission3" />
+                                <label htmlFor="permission3">Permission 3</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission4" name="permission4" />
+                                <label htmlFor="permission4">Permission 4</label>
+                            </div>
+                            <Button onClick={handleCloseEditModal}>Send</Button>
                         </div>
-                        <div>
-                            <Checkbox id="permission2" name="permission2" />
-                            <label htmlFor="permission2">Permission 2</label>
-                        </div>
-                        <div>
-                            <Checkbox id="permission3" name="permission3" />
-                            <label htmlFor="permission3">Permission 3</label>
-                        </div>
-                        <div>
-                            <Checkbox id="permission4" name="permission4" />
-                            <label htmlFor="permission4">Permission 4</label>
-                        </div>
-                        <Button onClick={handleCloseEditModal}>Send</Button>
-                    </div>
-                )}
-            </TableCell>
-        </TableRow>
-    ));
+                    )}
+                </TableCell>
 
-    const renderedInactiveTableRows = inactiveTableData.map((data, index) => (
-        <TableRow key={index}>
-            <TableCell>{index + 1}</TableCell>
-            <TableCell>{data.name}</TableCell>
-            <TableCell>{data.username}</TableCell>
-            <TableCell>{data.phone}</TableCell>
-            <TableCell>{data.email}</TableCell>
-            <TableCell>{data.status}</TableCell>
-            <TableCell>
-                <Button onClick={() => handleEditClick(index)}>Edit</Button>
-                {selectedUserIndex === index && (
-                    <div>
-                        <p>Edit Permissions</p>
+                <TableCell>{formattedDate}</TableCell>
+                <TableCell>{formattedTime}</TableCell>
+            </TableRow>
+        )
+    });
+
+    const renderedInactiveTableRows = inactiveTableData.map((data, index) => {
+        const createdAt = new Date(data?.createdAt);
+        const formattedDate = createdAt.toLocaleDateString();
+        const formattedTime = createdAt.toLocaleTimeString();
+        return (
+            <TableRow key={index}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{data.name}</TableCell>
+                <TableCell>{data.username}</TableCell>
+                <TableCell>{data.phone}</TableCell>
+                <TableCell>{data.email}</TableCell>
+                <TableCell>{data.status}</TableCell>
+                <TableCell>
+                    <Button onClick={() => handleEditClick(index)}>Edit</Button>
+                    {selectedUserIndex === index && (
                         <div>
-                            <Checkbox id="permission1" name="permission1" />
-                            <label htmlFor="permission1">Permission 1</label>
+                            <p>Edit Permissions</p>
+                            <div>
+                                <Checkbox id="permission1" name="permission1" />
+                                <label htmlFor="permission1">Permission 1</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission2" name="permission2" />
+                                <label htmlFor="permission2">Permission 2</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission3" name="permission3" />
+                                <label htmlFor="permission3">Permission 3</label>
+                            </div>
+                            <div>
+                                <Checkbox id="permission4" name="permission4" />
+                                <label htmlFor="permission4">Permission 4</label>
+                            </div>
+                            <Button onClick={handleCloseEditModal}>Send</Button>
                         </div>
-                        <div>
-                            <Checkbox id="permission2" name="permission2" />
-                            <label htmlFor="permission2">Permission 2</label>
-                        </div>
-                        <div>
-                            <Checkbox id="permission3" name="permission3" />
-                            <label htmlFor="permission3">Permission 3</label>
-                        </div>
-                        <div>
-                            <Checkbox id="permission4" name="permission4" />
-                            <label htmlFor="permission4">Permission 4</label>
-                        </div>
-                        <Button onClick={handleCloseEditModal}>Send</Button>
-                    </div>
-                )}
-            </TableCell>
-        </TableRow>
-    ));
+                    )}
+                </TableCell>
+                <TableCell>{formattedDate}</TableCell>
+                <TableCell>{formattedTime}</TableCell>
+            </TableRow>
+        )
+    });
 
     const fetchUserData = async () => {
         try {
@@ -198,38 +213,73 @@ function AdminPanelTable() {
                 </div>
             </section > */}
             <div className='fade-in'>
-            <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
-                <h3 style={{ color: 'white' }}>Admin Manager</h3>
-            </div>
-            <section style={{ marginTop: '5rem', borderRadius: '5px', background: '#a6a6ff' }} >
-                <button style={{ margin: '2rem' }} type="button" class="btn  hoverbutton" onClick={() => navigate('/register')} >Create Admin</button>
-                <section style={{ paddingTop: '5rem' }} className="content">
-                    <div className="container-fluid" style={{ marginTop: '-35px' }}>
-                        <div className="row">
-                            <div className="col-12 mt-5">
-                                <div className="card">
-                                    <div style={{ background: 'white' }} className="card-body">
-                                        <div className="single-table">
-                                            <div id="active_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                                <div className="table-responsive">
-                                                    <Table sx={{ background: 'white' }} >
-                                                        <TableHead>
-                                                            <TableRow sx={{ background: 'white  ' }}>
-                                                                <TableCell>Sr No.</TableCell>
-                                                                <TableCell>Name</TableCell>
-                                                                <TableCell>Username</TableCell>
-                                                                <TableCell>Phone</TableCell>
-                                                                <TableCell>Email</TableCell>
-                                                                <TableCell>Status</TableCell>
-                                                                <TableCell>Edit Permission</TableCell>
-                                                                <TableCell>Date</TableCell>
-                                                            </TableRow>
-                                                        </TableHead>
-                                                        <TableBody>{renderedActiveTableRows}</TableBody>
-                                                    </Table>
+                <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+                    <h3 style={{ color: 'white' }}>Admin Manager</h3>
+                </div>
+                <section style={{ marginTop: '5rem', borderRadius: '5px', background: '#a6a6ff' }} >
+                    <button style={{ margin: '2rem' }} type="button" class="btn  hoverbutton" onClick={() => navigate('/register')} >Create Admin</button>
+                    <section style={{ paddingTop: '5rem' }} className="content">
+                        <div className="container-fluid" style={{ marginTop: '-35px' }}>
+                            <div className="row">
+                                <div className="col-12 mt-5">
+                                    <div className="card">
+                                        <div style={{ background: 'white' }} className="card-body">
+                                            <div className="single-table">
+                                                <div id="active_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                    <div className="table-responsive">
+                                                        <Table sx={{ background: 'white' }} >
+                                                            <TableHead>
+                                                                <TableRow sx={{ background: 'white  ' }}>
+                                                                    <TableCell>Sr No.</TableCell>
+                                                                    <TableCell>Name</TableCell>
+                                                                    <TableCell>Username</TableCell>
+                                                                    <TableCell>Phone</TableCell>
+                                                                    <TableCell>Email</TableCell>
+                                                                    <TableCell>Status</TableCell>
+                                                                    <TableCell>Edit Permission</TableCell>
+                                                                    <TableCell>Date</TableCell>
+                                                                    <TableCell>Time</TableCell>
+                                                                </TableRow>
+                                                            </TableHead>
+                                                            <TableBody>{renderedActiveTableRows}</TableBody>
+                                                        </Table>
+                                                    </div>
+                                                    <div className="dataTables_info" id="active_table_info" role="status" aria-live="polite">
+                                                        Showing {activeTableData.length} active entries
+                                                    </div>
                                                 </div>
-                                                <div className="dataTables_info" id="active_table_info" role="status" aria-live="polite">
-                                                    Showing {activeTableData.length} active entries
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div >
+                            <div className="row">
+                                <div className="col-12 mt-5">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <div className="single-table">
+                                                <div id="inactive_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                    <div className="table-responsive">
+                                                        <Table>
+                                                            <TableHead>
+                                                                <TableRow>
+                                                                    <TableCell>Sr No.</TableCell>
+                                                                    <TableCell>Name</TableCell>
+                                                                    <TableCell>Username</TableCell>
+                                                                    <TableCell>Phone</TableCell>
+                                                                    <TableCell>Email</TableCell>
+                                                                    <TableCell>Status</TableCell>
+                                                                    <TableCell>Edit Permission</TableCell>
+                                                                    <TableCell>Date</TableCell>
+                                                                    <TableCell>Time</TableCell>
+                                                                </TableRow>
+                                                            </TableHead>
+                                                            <TableBody>{renderedInactiveTableRows}</TableBody>
+                                                        </Table>
+                                                    </div>
+                                                    <div className="dataTables_info" id="inactive_table_info" role="status" aria-live="polite">
+                                                        Showing {inactiveTableData.length} inactive entries
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,41 +287,8 @@ function AdminPanelTable() {
                                 </div>
                             </div>
                         </div >
-                        <div className="row">
-                            <div className="col-12 mt-5">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="single-table">
-                                            <div id="inactive_table_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
-                                                <div className="table-responsive">
-                                                    <Table>
-                                                        <TableHead>
-                                                            <TableRow>
-                                                                <TableCell>Sr No.</TableCell>
-                                                                <TableCell>Name</TableCell>
-                                                                <TableCell>Username</TableCell>
-                                                                <TableCell>Phone</TableCell>
-                                                                <TableCell>Email</TableCell>
-                                                                <TableCell>Status</TableCell>
-                                                                <TableCell>Edit Permission</TableCell>
-                                                                <TableCell>Date</TableCell>
-                                                            </TableRow>
-                                                        </TableHead>
-                                                        <TableBody>{renderedInactiveTableRows}</TableBody>
-                                                    </Table>
-                                                </div>
-                                                <div className="dataTables_info" id="inactive_table_info" role="status" aria-live="polite">
-                                                    Showing {inactiveTableData.length} inactive entries
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div >
-                </section >
-            </section>
+                    </section >
+                </section>
             </div>
         </>
     );

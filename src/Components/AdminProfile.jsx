@@ -67,9 +67,9 @@ function AdminProfile() {
                                 <div  className="card-body text-center">
                                     
                                     <Avatar alt="avatar" className="rounded-cicle img-fluid" sx={{width:"150px" , height:'150px '}}/>
-                                    <h5 class="my-3">John Smith</h5>
-                                    <p class="text-muted mb-1">Full Stack Developer</p>
-                                    <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                    <h5 class="my-3">{adminData?.name}</h5>
+                                    <p class="text-muted mb-1">{adminData?.email}</p>
+                                    {/* <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> */}
                                     <div className="d-flex justify-content-center mb-2">
                                         {editMode ? (
                                             <>

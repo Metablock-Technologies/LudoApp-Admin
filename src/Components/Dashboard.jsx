@@ -53,7 +53,7 @@ function Dashboard() {
 
     const fetchDetails = async () => {
         try {
-            const queryparams = {
+            const body = {
                 startDate: "20-08-2023",
                 endDate: "20-08-2023"
             }
@@ -62,8 +62,7 @@ function Dashboard() {
             const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
             console.log("headers", headers);
 
-            const response = await axios.get(baseURL + '/admin/dashboard', {
-                params: queryparams,
+            const response = await axios.post(baseURL + '/admin/dashboard', body, {
                 headers: headers,
             });
             console.log(response.data);
@@ -93,7 +92,7 @@ function Dashboard() {
                                 <h3> <CountUp end={data.totalUsers} duration={5} /> </h3>
                             </div>
                             <div>
-                                <h2><CountUp end={totalUsersAvarage} duration={5} />% then last week</h2>
+                                {/* <h2><CountUp end={totalUsersAvarage} duration={5} />% then last week</h2> */}
                             </div>
                             <div className="icon">
                                 < PublicIcon sx={{ color: "#6e6efe" }} className="fas fa-shopping-cart" />
@@ -101,7 +100,7 @@ function Dashboard() {
                             <div>
                             </div>
                         </div>
-                        <div className="small-box bg-info">
+                        {/* <div className="small-box bg-info">
                             <p>Today Users</p>
                             <div className="inner">
                                 <h3><CountUp end={todayUser} duration={5} /></h3>
@@ -112,13 +111,13 @@ function Dashboard() {
                                 <AccountCircleRoundedIcon sx={{ color: "#5ea552" }} className="fas fa-shopping-cart" />
                             </div>
 
-                        </div>
+                        </div> */}
                         <div className="small-box bg-info" id='box-3'>
                             <p>Block Users</p>
                             <div className="inner">
                                 <h3><CountUp end={data.blockedUsers} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2>
+                            {/* <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2> */}
                             <div className="icon">
                                 <AppBlockingRoundedIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
                             </div>
@@ -128,7 +127,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={activeUsers} duration={5} /></h3>
                             </div>
-                            <h2>{activeUsersAvarage}% then last week</h2>
+                            {/* <h2>{activeUsersAvarage}% then last week</h2> */}
                             <div className="icon">
                                 < RecordVoiceOverIcon sx={{
                                     color: "#14eb62", animation: 'blinkingEffect 1s infinite',
@@ -154,7 +153,7 @@ function Dashboard() {
                                 <h3><CountUp end={data.completedChallenges} duration={5} /></h3>
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% then last week</h2>
+                                {/* <h2>{totalUsersAvarage}% then last week</h2> */}
                             </div>
                             <div className="icon">
                                 < HowToRegIcon className="fas fa-shopping-cart" />
@@ -177,7 +176,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={data.ongoingChallenges} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2>
+                            {/* <h2><CountUp end={blockUsersAvarage} duration={5} />% then last week</h2> */}
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -189,7 +188,7 @@ function Dashboard() {
                                 <h3><CountUp end={data.cancelledChallenges} duration={5} /></h3>
 
                             </div>
-                            <h2>{<CountUp end={activeUsersAvarage} duration={5} />}% then last week</h2>
+                            {/* <h2>{<CountUp end={activeUsersAvarage} duration={5} />}% then last week</h2> */}
                             <div className="icon">
                                 < CancelIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
                             </div>
@@ -201,11 +200,7 @@ function Dashboard() {
                     <div className="container-heading">
                         <h1>Deposit Overview</h1>
                     </div>
-
-
                     <div className="main-small-box">
-
-
                         <div className="small-box bg-info">
                             <p>Total Deposit</p>
                             <div className="inner">
@@ -213,10 +208,10 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% then last week</h2>
+                                {/* <h2>{totalUsersAvarage}% then last week</h2> */}
                             </div>
                             <div className="icon">
-                                < CurrencyRupeeIcon sx={{color:'green'}} className="fas fa-shopping-cart" />
+                                < CurrencyRupeeIcon sx={{ color: 'green' }} className="fas fa-shopping-cart" />
                             </div>
                             <div>
 
@@ -228,9 +223,9 @@ function Dashboard() {
                                 <h3>{data.todayDeposits}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% then last week</h2>
+                            {/* <h2>{todayUserAvarage}% then last week</h2> */}
                             <div className="icon">
-                                <SavingsIcon sx={{color:'pink'}} className="fas fa-shopping-cart" />
+                                <SavingsIcon sx={{ color: 'pink' }} className="fas fa-shopping-cart" />
                             </div>
 
                         </div>
@@ -241,7 +236,7 @@ function Dashboard() {
                                 <h3>{data.rangeDeposits}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% then last week</h2>
+                            {/* <h2>{blockUsersAvarage}% then last week</h2> */}
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -268,10 +263,10 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% then last week</h2>
+                                {/* <h2>{totalUsersAvarage}% then last week</h2> */}
                             </div>
                             <div className="icon">
-                                < PriceCheckIcon sx={{color:'lightgreen'}} className="fas fa-shopping-cart" />
+                                < PriceCheckIcon sx={{ color: 'lightgreen' }} className="fas fa-shopping-cart" />
                             </div>
                             <div>
 
@@ -283,7 +278,7 @@ function Dashboard() {
                                 <h3>{data.todayWithdraw}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% then last week</h2>
+                            {/* <h2>{todayUserAvarage}% then last week</h2> */}
                             <div className="icon">
                                 <CurrencyExchangeIcon className="fas fa-shopping-cart" />
                             </div>
@@ -295,7 +290,7 @@ function Dashboard() {
                                 <h3>{data.rangeWithdraw}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% then last week</h2>
+                            {/* <h2>{blockUsersAvarage}% then last week</h2> */}
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>
@@ -320,7 +315,7 @@ function Dashboard() {
 
                             </div>
                             <div>
-                                <h2>{totalUsersAvarage}% then last week</h2>
+                                {/* <h2>{totalUsersAvarage}% then last week</h2> */}
                             </div>
                             <div id='icon-container' className="icon">
                                 <InsertChartIcon className="color-changing-icon" />
@@ -335,8 +330,8 @@ function Dashboard() {
                                 <h3>{data.todayCommission}</h3>
 
                             </div>
-                            <h2>{todayUserAvarage}% then last week</h2>
-                            <div  className="icon">
+                            {/* <h2>{todayUserAvarage}% then last week</h2> */}
+                            <div className="icon">
                                 <DataThresholdingIcon className="color-changings-icons" />
                             </div>
 
@@ -347,7 +342,7 @@ function Dashboard() {
                                 <h3>{data.penaltyCoins}</h3>
 
                             </div>
-                            <h2>{blockUsersAvarage}% then last week</h2>
+                            {/* <h2>{blockUsersAvarage}% then last week</h2> */}
                             <div className="icon">
                                 <i className="fas fa-shopping-cart" />
                             </div>

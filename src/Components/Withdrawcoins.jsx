@@ -4,17 +4,19 @@ import { Edit, Visibility } from '@mui/icons-material';
 import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
 import axios from 'axios';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+
 
 
 function Withdrawcoins() {
-    const [statusFilter, setStatusFilter] = React.useState('all'); // State to keep track of selected status
     const [viewerOpen, setViewerOpen] = useState(false);
     const [tableData, setTabledata] = useState([]);
     const [inputValues, setInputValues] = useState({});
-    const [selectedOption, setSelectedOption] = useState(''); // State to store selected option
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-
+    const [selectedOption, setSelectedOption] = useState(''); // State t
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = React.useState('all'); //
 
     // Define options for the dropdown
     const options = [
@@ -35,13 +37,6 @@ function Withdrawcoins() {
 
     const handleEndDateChange = (event) => {
         setEndDate(event.target.value);
-    };
-
-    const handleReset = (e) => {
-        e.preventDefault()
-        console.log("hwyy");
-        setStartDate('');
-        setEndDate('');
     };
 
     const handleStatusFilterChange = (event) => {
@@ -97,11 +92,90 @@ function Withdrawcoins() {
         withdrawcoins();
     }, [])
 
-    const filteredTableData = statusFilter === 'all'
-        ? tableData
-        : tableData.filter(data => data.status === statusFilter);
+    const handleReset = () => {
+        setStartDate('');
+        setEndDate('');
+        setSearchQuery('');
+        setStatusFilter('')
+        setTabledata(tableData);
+        // setIconRotation(iconRotation + 360); // Rotate the icon by 360 degrees
+        withdrawcoins()
+    };
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const filteredData = tableData?.filter((item) => {
+            const itemDate = new Date(item?.createdAt);
+            const startDateObj = startDate ? new Date(startDate) : null;
+            const endDateObj = endDate ? new Date(endDate) : null;
 
-    const renderedTableRows = filteredTableData.map((data, index) => {
+            // Check the date range
+            if (startDateObj && endDateObj) {
+                // Format the item date in the same format as your input (MM/DD/YYYY)
+                const formattedItemDate = `${itemDate.getMonth() + 1}/${itemDate.getDate()}/${itemDate.getFullYear()}`;
+                const start = `${startDateObj.getMonth() + 1}/${startDateObj.getDate()}/${startDateObj.getFullYear()}`;
+                const end = `${endDateObj.getMonth() + 1}/${endDateObj.getDate()}/${endDateObj.getFullYear()}`;
+                // console.log(start);
+                // console.log(formattedItemDate, start, end);
+                // console.log(formattedItemDate >= start);
+                if (
+                    formattedItemDate < start ||
+                    formattedItemDate > end
+                ) {
+                    return false;
+                }
+            }
+            if (startDateObj) {
+                const formattedItemDate = `${itemDate.getMonth() + 1}/${itemDate.getDate()}/${itemDate.getFullYear()}`;
+                const start = `${startDateObj.getMonth() + 1}/${startDateObj.getDate()}/${startDateObj.getFullYear()}`;
+                if (
+                    formattedItemDate < start
+                ) {
+                    return false;
+                }
+            }
+            if (endDateObj) {
+                const formattedItemDate = `${itemDate.getMonth() + 1}/${itemDate.getDate()}/${itemDate.getFullYear()}`;
+                const end = `${endDateObj.getMonth() + 1}/${endDateObj.getDate()}/${endDateObj.getFullYear()}`;
+                if (
+                    formattedItemDate > end
+                ) {
+                    return false;
+                }
+            }
+
+            // Check the user name
+            console.log(searchQuery);
+            console.log(item.user.username);
+            console.log(statusFilter);
+            console.log(item.status);
+
+            if (searchQuery && !item?.user?.username?.toLowerCase().includes(searchQuery.toLowerCase())) {
+                return false;
+            }
+            if (statusFilter !== "" && item?.status !== statusFilter) {
+                return false;
+            }
+            return true;
+        });
+
+        setTabledata(filteredData);
+        console.log(tableData);
+        console.log(filteredData);
+    };
+    // const filteredtableData = statusFilter === 'all'
+    //     ? tableData
+    //     : tableData.filter(data => data.status === statusFilter);
+
+    const filteredData = tableData.filter(data => {
+        if (!startDate || !endDate) {
+            return true;
+        }
+        const dataDate = new Date(data.date);
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        return dataDate >= start && dataDate <= end;
+    });
+    const renderedTableRows = filteredData.map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
         const formattedTime = createdAt.toLocaleTimeString();
@@ -165,90 +239,70 @@ function Withdrawcoins() {
                             <div className="col-12 mt-5">
                                 <div className="card">
                                     <div style={{ background: '#a6a6ff' }} className="card-body">
-                                        <form >
-                                            <input type="hidden" name="_token" defaultValue="ufIIKQky4pOtOxFVX1zXKHf58iF6SEHdlPsJf3tm" />
+                                        <form role="form" type="submit">
+                                            {/* <input type="hidden" name="_token" defaultValue="eLkpGsUBYr9izTDYhoNZCCY6pxm06c8hRkw1N41O" /> */}
                                             <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
                                                 <div className="form-group">
                                                     <label>Pick a start date:</label>
                                                     <div className="input-group date" id="datepicker" data-target-input="nearest">
-                                                        <input type="date"
-                                                            className="form-control t"
-                                                            placeholder="yyyy-mm-dd"
-                                                            name="start_date"
-                                                            value={startDate}
-                                                            onChange={handleStartDateChange} />
+                                                        <input type="date" className="form-control t" placeholder="yyyy-mm-dd" name="start_date" onChange={(e) => setStartDate(e.target.value)} value={startDate} />
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
                                                 <div className="form-group">
                                                     <label>Pick a end date:</label>
                                                     <div className="input-group date" id="datepicker1" data-target-input="nearest">
-                                                        <input type="date"
-                                                            className="form-control"
-                                                            placeholder="yyyy-mm-dd"
-                                                            name="end_date"
-                                                            value={endDate}
-                                                            onChange={handleEndDateChange} />
+                                                        <input type="date" className="form-control " placeholder="yyyy-mm-dd" name="end_date" onChange={(e) => setEndDate(e.target.value)} value={endDate} />
                                                     </div>
                                                 </div>
-
                                             </div>
+
 
                                             <div style={{ clear: 'both' }} />
                                             <div className='row'>
                                                 <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
-                                                    <label htmlFor="validationCustomUsername">Search </label>
-                                                    <div className="input-group">
-                                                        <input type="text" className="form-control" id="validationCustomUsername" defaultValue placeholder="Name,Username,number" aria-describedby="inputGroupPrepend" name="user" />
+                                                    <div className="form-group">
+                                                        <label htmlFor="validationCustomUsername"> User Name</label>
+                                                        <div className="input-group">
+                                                            <input
+                                                                type="text"
+                                                                className="form-control"
+                                                                placeholder="Username"
+                                                                name="userid"
+                                                                value={searchQuery}
+                                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
-                                                    <div id="table_id_filter" className="dataTables_filter">
-                                                        <label>
-                                                            Filter by Status:
-
-                                                        </label>
-                                                        <select
-
-                                                            value={statusFilter}
-                                                            onChange={handleStatusFilterChange}
-                                                            style={{ height: "37px" }}
-                                                            className="form-control form-control-sm "
-                                                        >
+                                                    <div className="form-group">
+                                                        <label htmlFor="validationCustomUsername">Select id status</label>
+                                                        <select className="custom-select selectbox" name="status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                                                             <option value="all">All</option>
                                                             <option value="pending">Pending</option>
                                                             <option value="rejected">Rejected</option>
                                                             <option value="approved">Approved</option>
                                                         </select>
                                                     </div>
-                                                    {/* <label>Select an Option:</label>
-                                            <select
-                                                className="form-control"
-                                                value={selectedOption}
-                                                onChange={handleDropdownChange}
-                                                name="dropdownOption"
-                                            >
-                                                <option value="">Select an option</option>
-                                                {options.map(option => (
-                                                    <option key={option.value} value={option.value}>
-                                                        {option.label}
-                                                    </option>
-                                                ))}
-                                            </select> */}
                                                 </div>
                                             </div>
+                                            {/* <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                                                <label htmlFor="validationCustomUsername">Type</label>
+                                                <div className="input-group">
+                                                    <input type="text" className="form-control" placeholder="Type" defaultValue name="type_id" />
+                                                </div>
+                                            </div> */}
 
-                                            <div style={{ clear: 'both' }} />
-
-
-                                            <div style={{ clear: 'both' }} />
+                                            <div className='row' />
                                             <br />
-                                            <div className="col-md-12 mb-12">
+                                            <div className="col-12">
                                                 <center>
-                                                    <button className="btn btn-primary" style={{}} >Search Now</button>
-                                                    <button className='btn btn-success' type='button' style={{ marginLeft: 20, textAlign: 'center' }} onClick={handleReset}>Reset</button>
-                                                    {/* <button onClick={handleReset}>Reset</button> */}
+                                                    <button className="btn btn-primary" onClick={(e) => handleSearch(e)} >Search Now</button>
+                                                    <button className="button-reset btn btn-info" style={{ marginLeft: '20px' }} type="button" onClick={handleReset}>Reset <span><RotateLeftIcon /></span> </button>
+
                                                 </center>
                                             </div>
                                             <br />
