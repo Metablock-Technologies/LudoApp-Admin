@@ -19,6 +19,7 @@ function AdminPanelTable() {
 
     const handleCloseEditModal = () => {
         setSelectedUserIndex(-1); // Reset the selected user index to close the modal
+        fetchUserData();
     };
 
 

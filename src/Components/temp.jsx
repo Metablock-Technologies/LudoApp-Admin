@@ -9,13 +9,7 @@ import { useEffect } from 'react';
 
 
 function Challenge() {
-
-
     const [currentPage, setCurrentPage] = useState(1);
-
-
-
-
     const [tabledata, setTabledata] = useState('');
     const [editingIndex, setEditingIndex] = useState(null);
     const [games, setGames] = useState(tabledata);
@@ -129,13 +123,13 @@ function Challenge() {
     useEffect(() => {
         fetchChallenge();
     }, [])
+
     return (
         <> <div className='fade-in'>
             <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
                 <h3 style={{ color: 'white' }}> Challenge Manager</h3>
             </div>
             <section style={{ marginTop: '5rem' }} className="content">
-
                 <div className="container-fluid" style={{ marginTop: '-35px' }}>
                     <div className="row">
                         {/* Primary table start */}
