@@ -268,7 +268,7 @@ function UserManager() {
             const accessToken = localStorage.getItem('access_token');
             const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 
-            const response = await axios.get(`${baseURL}/user/all`, {
+            const response = await axios.get(`${baseURL}/challenge`, {
                 headers: headers,
             });
 
@@ -324,32 +324,6 @@ function UserManager() {
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
 
-    // pagination part 
-    const handleBlockUser = async (userId, status) => {
-        try {
-
-            const requestbody = {
-                userId: userId,
-                status: status
-            }
-            const accessToken = localStorage.getItem('access_token');
-            const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
-
-            console.log(requestbody);
-            const response = await axios.post(baseURL + '/admin/block', requestbody, {
-                headers: headers
-            }); // Adjust the URL
-            if (response.status === 200) {
-                // Update the blockedUsers state or perform any necessary action
-                // setBlockedUsers([...blockedUsers, userId]);
-                fetchAdmindata();
-                // alert('User blocked successfully');
-            }
-        } catch (error) {
-            console.error('Error blocking user:', error);
-            // alert('An error occurred while blocking the user');
-        }
-    };
     const filteredData = tabledata.filter(data => {
         if (!startDate || !endDate) {
             return true;
@@ -368,29 +342,13 @@ function UserManager() {
         return (
             <tr role="row" key={index}>
                 <td>{index + 1}</td>
-                <td>{data?.name}</td>
-                <td>{data?.phone}</td>
-                <td>{data?.wallet?.amount}</td>
-                <td>{data?.username}</td>
+                <td>{data?.ChallengerUser?.username}</td>
+                <td>{data?.AcceptorUser?.username}</td>
+                <td>{data?.price}</td>
+                <td>{data?.status}</td>
+                <td>{data?.category}</td>
                 <td>{formattedDate}</td>
                 <td>{formattedTime}</td>
-                <td>
-                    {data?.blocked === false ? (
-                        <button
-                            className="btn btn-danger"
-                            onClick={() => handleBlockUser(data?.id, true)} // Pass the user ID to the function
-                        >
-                            Block
-                        </button>)
-                        :
-                        (<button
-                            className="btn btn-danger"
-                            onClick={() => handleBlockUser(data?.id, false)} // Pass the user ID to the function
-                        >
-                            Unblock
-                        </button>)
-                    }
-                </td>
             </tr>
         );
     });
@@ -453,7 +411,7 @@ function UserManager() {
     return (
         <> <div className='fade-in'>
             <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
-                <h3 style={{ color: 'white' }}>User Manager</h3>
+                <h3 style={{ color: 'white' }}>Challenge Manager</h3>
             </div>
             <section style={{ marginTop: '2rem' }} className="content">
 
@@ -603,14 +561,14 @@ function UserManager() {
 
                                                         {/* <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">SR. NO.</th> */}
                                                         <tr role="row">
-                                                            <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">Number</th>
-                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Name </th>
-                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Mobile </th>
-                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 105 }} aria-label="To User: activate to sort column ascending">Balance</th>
-                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Username</th>
+                                                            <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">Sr.No.</th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Creator </th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Accepter </th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 105 }} aria-label="To User: activate to sort column ascending">Amount</th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Status</th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Game Type </th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 129 }} aria-label="Date: activate to sort column ascending">Date</th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Time </th>
-                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Action </th>
                                                         </tr>
 
                                                     </thead>

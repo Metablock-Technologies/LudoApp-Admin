@@ -27,7 +27,7 @@ import GavelIcon from '@mui/icons-material/Gavel';
 import { Settings } from '@mui/icons-material';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import Challenge from './Challenge';
+import Challenge from './ChallengeManager';
 import AdminEarning from './AdminEarning';
 import UserManager from './UserManager';
 import AdminLoginPage from "./Authentication/LoginPage"
@@ -36,10 +36,10 @@ import AdminManager from './AdminManager';
 import EditPermission from './Permissions/EditPermission';
 import AdminProfile from './AdminProfile';
 import { useState, useEffect } from 'react';
-import Addcoins from './Addcoins';
+import Addcoins from './DepositPayment';
 import Withdrawcoins from './Withdrawcoins';
 import AvatarMenu from "./AvatarMenu";
-import GameJudgement from './GameJudgement';
+import GameJudgement from './ConflictChallenge';
 import AdminRegistrationPage from './Authentication/CreateAdmin';
 
 
@@ -95,7 +95,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-export default function Header() {
+export default function Header(props) {
     const [openDrawer, setOpenDrawer] = useState(false);
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
@@ -206,7 +206,7 @@ export default function Header() {
                             justifyContent: open ? 'initial' : 'center',
                             px: 2.5,
                         }}
-                        onClick={() => navigate("/")}  >
+                        onClick={() => navigate("/dashboard")}  >
                         <ListItemIcon
                             sx={{
                                 minWidth: 0,
@@ -493,16 +493,18 @@ export default function Header() {
                         },
                     }}
                 >
+                    {props.outlet}
 
-                    <Routes>
-                        {/* <Route exact path='/' element={<AdminLoginPage />}></Route> */}
+
+                    {/* <Routes>
+                        <Route exact path='/' element={<AdminLoginPage />}></Route>
                         <Route exact path='/' element={<Dashboard />}></Route>
 
                         <Route exact path='/register' element={<AdminRegistrationPage />}></Route>
                         <Route exact path='/Challenge' element={<Challenge />}></Route>
                         <Route exact path='/UserManager' element={<UserManager />}></Route>
                         <Route exact path='/AdminManager' element={<AdminManager />}></Route>
-                        {/* <Route exact path='/NewTransaction' element={<NewTransaction />}></Route> */}
+                        <Route exact path='/NewTransaction' element={<NewTransaction />}></Route>
                         <Route exact path='/EditPermissionr' element={<EditPermission />}></Route>
                         <Route exact path='/AdminEarning' element={<AdminEarning />}></Route>
                         <Route exact path='/AdminProfile' element={<AdminProfile />}></Route>
@@ -510,7 +512,7 @@ export default function Header() {
                         <Route exact path='/Withdrawcoins' element={<Withdrawcoins />}></Route>
                         <Route exact path='/GameJudgement' element={<GameJudgement />}></Route>
                         <Route exact path='/Setting' element={<Setting />}></Route>
-                    </Routes>
+                    </Routes> */}
 
                     {/* <Dashboard /> */}
                 </Box>
