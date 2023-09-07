@@ -312,7 +312,11 @@ function Addcoins() {
                                             <div id="table_id_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
                                                 <div className="table-responsive">
                                                     {viewerOpen && (
-                                                        <ImageViewer imageUrl={selectedImageUrl} onClose={() => setViewerOpen(false)} />
+                                                        // <ImageViewer imageUrl={selectedImageUrl} />
+                                                        <div>
+                                                            <a href={baseURL + "/image/" + selectedImageUrl} alt="Acceptor Image">Link to image</a>
+                                                            {/* <a target="_blank" href={imageurl} src={imageurl} alt="Acceptor Image" /> */}
+                                                        </div>
                                                     )}
                                                     <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{}}>
                                                         <thead className="text-capitalize">

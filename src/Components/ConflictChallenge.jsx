@@ -55,7 +55,7 @@ function GameJudgement() {
 
     //paginations area 
 
-    const ITEMS_PER_PAGE = 10;
+    const ITEMS_PER_PAGE = 20;
     const totalPages = Math.ceil(filteredtableData.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -160,8 +160,12 @@ function GameJudgement() {
                 headers: headers,
             });
 
-            console.log("response", response.data);
-            setTabledata(response.data.data);
+            console.log("responsegamejudgement", response.data);
+
+            // Filter challenges with status "judgement"
+            const judgementChallenges = response.data.data.filter(data => data.status === 'judgement');
+
+            setTabledata(judgementChallenges);
         }
         catch (err) {
             console.log(err);
@@ -171,13 +175,14 @@ function GameJudgement() {
         try {
             const requestbody = {
                 challengeId: id,
-                winnerId: 25,
+                winnerId: winnerid,
                 type: selectedValue
             }
             console.log(requestbody);
             const accessToken = localStorage.getItem('access_token');
             const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 
+            console.log(requestbody);
             console.log(headers);
             const response = await axios.post(baseURL + '/admin/challengeresults/action', requestbody, {
                 headers: headers,
@@ -207,71 +212,87 @@ function GameJudgement() {
                     {data?.ChallengerUser?.username}
                 </div>
 
-                <Button
+                {/* <Button
                     variant="outlined"
                     color="primary"
                     onClick={() => acceptreject(data.id, data.challenger)}
-                >
-                    <div
-                        style={{
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '4px',
-                            background: '#3f51b5',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: '8px',
-                        }}
+                ></Button> */}
+
+                {data?.status === "judgement" ?
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => acceptreject(data.id, data?.result?.winner)}
                     >
-                        <span
+                        <div
                             style={{
-                                color: '#ffffff',
-                                fontSize: '14px',
-                                fontWeight: 'bold',
+                                width: '20px',
+                                height: '20px',
+                                borderRadius: '4px',
+                                background: '#3f51b5',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: '8px',
                             }}
                         >
-                            ✓
-                        </span>
-                    </div>
-                    Accept
-                </Button>
+                            <span
+                                style={{
+                                    color: '#ffffff',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                ✓
+                            </span>
+                        </div>
+                        Accept
+                    </Button>
+                    : null
+                }
             </td>
             <td>
                 <Button color="primary" onClick={() => handleOpenDialog(data?.result.challenger_image)}>
                     <Visibility />
                 </Button>
             </td>
-            <td>{data?.AcceptorUser?.username}
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => acceptreject(data?.id, data?.challenger)}
-                >
-                    <div
-                        style={{
-                            width: '20px',
-                            height: '20px',
-                            borderRadius: '4px',
-                            background: '#3f51b5',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginRight: '8px',
-                        }}
+            <td>
+                <div>
+
+                    {data?.AcceptorUser?.username}
+                </div>
+                {data?.status === "judgement" ?
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => acceptreject(data?.id, data?.challenger)}
                     >
-                        <span
+                        <div
                             style={{
-                                color: '#ffffff',
-                                fontSize: '14px',
-                                fontWeight: 'bold',
+                                width: '20px',
+                                height: '20px',
+                                borderRadius: '4px',
+                                background: '#3f51b5',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: '8px',
                             }}
                         >
-                            ✓
-                        </span>
-                    </div>
-                    Accept
-                </Button>
+                            <span
+                                style={{
+                                    color: '#ffffff',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                ✓
+                            </span>
+                        </div>
+                        Accept
+                    </Button>
+                    : null
+                }
             </td>
             <td>
                 <Button color="primary" onClick={() => handleOpenDialog(data?.result?.acceptor_image)}>
@@ -311,9 +332,30 @@ function GameJudgement() {
     });
 
 
+    // const [imageurl, setImageurl] = useState('');
+    // const fetchimage = async () => {
+    //     try {
+    //         // const params = {
+    //         //     key: selectedImageUrl
+    //         // }
+    //         console.log("imageurl fetching");
+    //         const accessToken = localStorage.getItem('access_token');
+    //         const headers = accessToken ? {Authorization: `Bearer ${accessToken}` } : { };
 
+    //         console.log(headers);
+    //         const response = await axios.get(baseURL + `/image/${selectedImageUrl}`, {
+    //             headers: headers,
+    //         });
+    //         console.log(response.data);
+    //         setImageurl(response.data);
+    //         console.log(imageurl);
+    //     } catch (error) {
 
-
+    //     }
+    // }
+    // useEffect(() => {
+    //     fetchimage();
+    // }, [selectedImageUrl])
     return (
 
         <>
@@ -412,7 +454,11 @@ function GameJudgement() {
                                                 <div id="table_id_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
                                                     <div className="table-responsive">
                                                         {viewerOpen && (
-                                                            <ImageViewer imageUrl={selectedImageUrl} />
+                                                            // <ImageViewer imageUrl={selectedImageUrl} />
+                                                            <div>
+                                                                <a href={baseURL + "/image/" + selectedImageUrl} alt="Acceptor Image">Link to image</a>
+                                                                {/* <a target="_blank" href={imageurl} src={imageurl} alt="Acceptor Image" /> */}
+                                                            </div>
                                                         )}
                                                         <div className="scrollable-table">
 

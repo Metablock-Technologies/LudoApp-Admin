@@ -185,6 +185,7 @@ export default function AdminEarning() {
         });
         setFilteredData(filtered);
         setPage(0);
+        fetchAdminTransactions();
     }, [searchAmount, initialRows]);
 
     const startIndex = page * rowsPerPage;

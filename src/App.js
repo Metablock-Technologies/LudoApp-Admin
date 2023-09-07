@@ -19,19 +19,23 @@ import GameJudgement from './Components/ConflictChallenge';
 import Settings from './Components/Setting';
 import AdminManager from './Components/AdminManager';
 import AdminEarning from './Components/AdminEarning';
+import ForgetEmail from './Components/ForgetPassword/ForgetEmail';
+import GetForgetOtp from './Components/ForgetPassword/GetForgetOtp';
+import ChangePassword from './Components/ForgetPassword/ChangePassword';
 
 function App() {
-
-
     return (
         <>
-
             <BrowserRouter>
                 {/* <AdminLoginPage /> */}
                 {/* <Header /> */}
                 <Routes>
                     <Route exact path={`/*`} element={<AuthLayout />}>
                         <Route exact path='' element={<AdminLoginPage />}></Route>
+
+                        <Route exact path='forgetPassword' element={<ForgetEmail />}></Route>
+                        <Route exact path='getForgetOtp' element={<GetForgetOtp />}></Route>
+                        <Route exact path='changePassword' element={<ChangePassword />}></Route>
                     </Route>
                     <Route exact path="/*" element={<Layout />}>
                         <Route exact path='dashboard' element={<Dashboard />}></Route>

@@ -167,6 +167,11 @@ function AdminLoginPage() {
 
                         />
                         {passwordError && <Typography color="error">{passwordError}</Typography>}
+                        <div className="col-12 my-2">
+                            <a href>
+                                <button type='submit' style={{ color: 'black' }} onClick={() => navigate("forgetPassword")}>Forget Password</button>
+                            </a>
+                        </div>
                         <Button
                             variant="contained"
                             color="primary"
