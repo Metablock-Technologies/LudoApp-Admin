@@ -207,3 +207,9 @@ h2{  font-size: 15px !important;
 .MuiButton-containedPrimary:hover {
     background-color: #4700b3 !important;
 }
+
+@media (min-width: 1200px){
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+  max-width: fit-content;
+
+}}

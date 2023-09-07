@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography, Container } from '@mui/material';
+import { Button, TextField, Typography, Container, InputAdornment, IconButton } from '@mui/material';
 import './AdminRegistrationPage.css';
 import { baseURL, token } from '../../token';
 import axios from 'axios';
 import { BrowserRouter, Navigate, useNavigate } from 'react-router-dom';
 import Header from '../Header';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 function AdminLoginPage() {
@@ -15,6 +16,8 @@ function AdminLoginPage() {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [loginSuccessful, setLoginSuccessful] = useState(false);
+    const [showPassword, setShowPassword] = useState(false); // Step 2
+
     const navigate = useNavigate();
     const handleLoginInputChange = (e) => {
         const { name, value } = e.target;
@@ -93,6 +96,11 @@ function AdminLoginPage() {
 
     };
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword); // Step 3
+    };
+
+
     return (
 
 
@@ -132,17 +140,31 @@ function AdminLoginPage() {
                             name="email"
                             value={loginData.email}
                             onChange={handleLoginInputChange}
+
                         />
                         {emailError && <Typography color="error">{emailError}</Typography>}
                         <TextField
                             label="Password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
                             variant="outlined"
                             margin="normal"
                             fullWidth
                             name="password"
                             value={loginData.password}
                             onChange={handleLoginInputChange}
+                            InputProps={{ // Add the eye button
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={toggleShowPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+
                         />
                         {passwordError && <Typography color="error">{passwordError}</Typography>}
                         <Button

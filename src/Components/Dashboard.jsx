@@ -29,6 +29,11 @@ function Dashboard() {
     const [activeUsersAvarage, setActiveUsersAvarage] = useState(84);
     const [blockUsersAvarage, setBlockUsersAvarage] = useState(78);
 
+    const [startDateFilter, setStartDateFilter] = useState('');
+    const [endDateFilter, setEndDateFilter] = useState('');
+    const [filteredRangeWithdraw, setFilteredRangeWithdraw] = useState(null);
+
+
 
     const initialData = {
         rangeDeposits: 0,
@@ -51,6 +56,16 @@ function Dashboard() {
 
     const [data, setData] = useState(initialData);
 
+
+    const handleStartDateChange = (e) => {
+        setStartDateFilter(e.target.value);
+    };
+
+    const handleEndDateChange = (e) => {
+        setEndDateFilter(e.target.value);
+    };
+
+    
     const fetchDetails = async () => {
         try {
             const body = {

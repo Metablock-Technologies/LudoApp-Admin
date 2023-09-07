@@ -164,16 +164,24 @@ const Settings = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            <div style={{ marginBottom: '2rem' }}>
-                                                {isEditing ? (
-                                                    <>
-                                                        <button className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
-                                                        <button className="btn btn-primary" onClick={handleSaveClick}>Save</button>
-                                                    </>
-                                                ) : (
-                                                    <button className="btn btn-primary" onClick={handleEditClick}>Edit</button>
-                                                )}
-                                            </div>
+
+                                        </div>
+                                        <div style={{ marginBottom: '2rem' }}>
+                                            {isEditing ? (
+                                                <> <div style={{ display: 'flex', justifyContent: 'space-around', float: 'right' }}>
+                                                    <button className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
+                                                    <button style={{ marginLeft: '1rem' }} className="btn btn-primary" onClick={handleSaveClick}>Save</button>
+                                                </div>
+
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-around', float: 'right' }}>
+                                                        <button className="btn btn-primary" onClick={handleEditClick}>Edit</button>
+                                                    </div>
+                                                </>
+
+                                            )}
                                         </div>
                                     </div>
                                 </div>

@@ -4,6 +4,8 @@ import { Pagination, PaginationItem, ArrowBackIcon, ArrowForwardIcon } from '@mu
 
 import { Visibility, Check } from '@mui/icons-material';
 import ImageViewer from './ImageViewer';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
+
 import { baseURL } from '../token';
 import axios from 'axios';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
@@ -22,6 +24,7 @@ function GameJudgement() {
     const [showComponent, setShowComponent] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [acceptor, setAcceptor] = useState("");
+    const [openDialog, setOpenDialog] = useState(false);
 
 
     useEffect(() => {
@@ -36,6 +39,17 @@ function GameJudgement() {
             return challengeDate >= new Date(startDate) && challengeDate <= new Date(endDate);
         });
         setFilteredtableData(filteredData);
+    };
+
+
+    //dialog box
+
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
     };
 
 
@@ -188,7 +202,11 @@ function GameJudgement() {
         return (<tr key={index}>
             <td>{index + 1}</td>
             <td>{data?.roomcode}</td>
-            <td>{data?.ChallengerUser?.username}
+            <td>
+                <div>
+                    {data?.ChallengerUser?.username}
+                </div>
+
                 <Button
                     variant="outlined"
                     color="primary"
@@ -220,7 +238,7 @@ function GameJudgement() {
                 </Button>
             </td>
             <td>
-                <Button color="primary" onClick={() => handleImageClick(data?.result.challenger_image)}>
+                <Button color="primary" onClick={() => handleOpenDialog(data?.result.challenger_image)}>
                     <Visibility />
                 </Button>
             </td>
@@ -256,7 +274,7 @@ function GameJudgement() {
                 </Button>
             </td>
             <td>
-                <Button color="primary" onClick={() => handleImageClick(data?.result?.acceptor_image)}>
+                <Button color="primary" onClick={() => handleOpenDialog(data?.result?.acceptor_image)}>
                     <Visibility />
                 </Button>
             </td>
@@ -299,6 +317,13 @@ function GameJudgement() {
     return (
 
         <>
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Dialog Title</DialogTitle>
+                <DialogContent>
+                    {/* Add your dialog content here */}
+                    <p>This is the dialog content.</p>
+                </DialogContent>
+            </Dialog>
             <div className='fade-in'>
                 <div className={`your-component-wrapper ${showComponent ? 'fadeIn show' : ''}`}>
                     <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>

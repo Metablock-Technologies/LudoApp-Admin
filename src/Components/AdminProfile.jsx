@@ -51,63 +51,64 @@ function AdminProfile() {
 
         <>
             <div className='fade-in'>
-            <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
-                <h3 style={{ color: 'white' }}>Admin Profile</h3>
-            </div>
-            <section style={{ marginTop: '2rem', borderRadius: '5px', backgroundColor: '#a6a6ff' }}>
-                <div style={{ background: '#a6a6ff' }} className="container  py-5">
-                    <div className="row">
-                        <div className="col">
-                           
+                <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
+                    <h3 style={{ color: 'white' }}>Admin Profile</h3>
+                </div>
+                <section style={{ marginTop: '2rem', borderRadius: '5px', backgroundColor: '#a6a6ff' }}>
+                    <div style={{ background: '#a6a6ff' }} className="container  py-5">
+                        <div className="row">
+                            <div className="col">
+
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-4">
-                            <div style={{ alignItems: 'center' }} className="card mb-4">
-                                <div  className="card-body text-center">
-                                    
-                                    <Avatar alt="avatar" className="rounded-cicle img-fluid" sx={{width:"150px" , height:'150px '}}/>
-                                    <h5 class="my-3">{adminData?.name}</h5>
-                                    <p class="text-muted mb-1">{adminData?.email}</p>
-                                    {/* <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> */}
-                                    <div className="d-flex justify-content-center mb-2">
-                                        {editMode ? (
-                                            <>
-                                                <button
+                        <div className="row">
+                            <div className="col-lg-4">
+                                <div style={{ alignItems: 'center' }} className="card mb-4">
+                                    <div className="card-body text-center">
 
-                                                    type="button"
-                                                    className="btn btn-outline-primary ms-1"
-                                                    onClick={handleEditMode}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
+                                        <Avatar alt="avatar" className="rounded-cicle img-fluid" sx={{ width: "150px", height: '150px ' }} />
+                                        <h5 class="my-3">{adminData?.name}</h5>
+                                        <p class="text-muted mb-1">{adminData?.email}</p>
+                                        {/* <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> */}
+                                        <div className="d-flex justify-content-center mb-2">
+                                            {editMode ? (
+                                                <>
+                                                    <button
 
-                                                    type="button"
-                                                    className="btn btn-outline-primary ms-1"
+                                                        type="button"
+                                                        className="btn btn-outline-primary ms-1"
+                                                        onClick={handleEditMode}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                    style={{marginLeft:'1rem'}}
 
-                                                    onClick={handleEditMode}
-                                                >
-                                                    Save
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <>
+                                                        type="button"
+                                                        className="btn btn-outline-primary ms-1"
 
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary ms-1"
-                                                    onClick={handleEditMode}>
-                                                    Edit Profile <BorderColorIcon />
-                                                </button>
-                                            </>
-                                        )}
+                                                        onClick={handleEditMode}
+                                                    >
+                                                        Save
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <>
+
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-outline-primary ms-1"
+                                                        onClick={handleEditMode}>
+                                                        Edit Profile <BorderColorIcon />
+                                                    </button>
+                                                </>
+                                            )}
 
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* <div className="card mb-4 mb-lg-0">
+                                {/* <div className="card mb-4 mb-lg-0">
                                 <div className="card-body p-0">
                                     <ul className="list-group list-group-flush rounded-3">
                                         <li className="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -133,119 +134,119 @@ function AdminProfile() {
                                     </ul>
                                 </div>
                             </div> */}
-                        </div>
-                        <div className="col-lg-8">
-                            <div className="card mb-4">
-                                <div className="card-body">
-                                    <div className="row">
-                                        <div className="col-sm-3">
-
-                                            <p className="mb-0">Full Name</p>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            {editMode ? (
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={adminData.name}
-                                                    name="name"
-                                                    onChange={(e) =>
-                                                        setAdminData({
-                                                            ...adminData,
-                                                            name: e.target.value,
-                                                        })
-                                                    }
-                                                />
-                                            ) : (
-                                                <p className="text-muted mb-0">{adminData.name}</p>
-                                            )}
-
-                                        </div>
-                                    </div>
-
-                                    <hr />
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <p className="mb-0"> Admin Username</p>
-                                        </div>
-                                        <div className="col-sm-9">
-
-                                            {editMode ? (
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={adminData.username}
-                                                    name="name"
-                                                    onChange={(e) =>
-                                                        setAdminData({
-                                                            ...adminData,
-                                                            username: e.target.value,
-                                                        })
-                                                    }
-                                                />
-                                            ) : (
-                                                <p className="text-muted mb-0">{adminData.username}</p>
-                                            )}
-
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <p className="mb-0">Email</p>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            {editMode ? (
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={adminData.email}
-                                                    name="name"
-                                                    onChange={(e) =>
-                                                        setAdminData({
-                                                            ...adminData,
-                                                            email: e.target.value,
-                                                        })
-                                                    }
-                                                />
-                                            ) : (
-                                                <p className="text-muted mb-0">{adminData.email}</p>
-                                            )}
-
-                                        </div>
-                                    </div>
-                                    <hr />
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <p className="mb-0">Phone</p>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            {editMode ? (
-                                                <input
-                                                    type="text"
-                                                    value={adminData.phone}
-                                                    className="form-control"
-                                                    name="name"
-
-                                                    onChange={(e) =>
-                                                        setAdminData({
-                                                            ...adminData,
-                                                            phone: e.target.value,
-                                                        })
-                                                    }
-                                                />
-                                            ) : (
-                                                <p className="text-muted mb-0">{adminData.phone}</p>
-                                            )}
-
-                                        </div>
-                                    </div>
-                                    <hr />
-
-
-                                </div>
                             </div>
-                            {/* <div className="row">
+                            <div className="col-lg-8">
+                                <div className="card mb-4">
+                                    <div className="card-body">
+                                        <div style={{ padding: "5px" }} className="row">
+                                            <div className="col-sm-3">
+
+                                                <p className="mb-0">Full Name</p>
+                                            </div>
+                                            <div className="col-sm-9">
+                                                {editMode ? (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={adminData.name}
+                                                        name="name"
+                                                        onChange={(e) =>
+                                                            setAdminData({
+                                                                ...adminData,
+                                                                name: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted mb-0">{adminData.name}</p>
+                                                )}
+
+                                            </div>
+                                        </div>
+
+                                        <hr />
+                                        <div className="row">
+                                            <div className="col-sm-3">
+                                                <p className="mb-0"> Admin Username</p>
+                                            </div>
+                                            <div className="col-sm-9">
+
+                                                {editMode ? (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={adminData.username}
+                                                        name="name"
+                                                        onChange={(e) =>
+                                                            setAdminData({
+                                                                ...adminData,
+                                                                username: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted mb-0">{adminData.username}</p>
+                                                )}
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div className="row">
+                                            <div className="col-sm-3">
+                                                <p className="mb-0">Email</p>
+                                            </div>
+                                            <div className="col-sm-9">
+                                                {editMode ? (
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={adminData.email}
+                                                        name="name"
+                                                        onChange={(e) =>
+                                                            setAdminData({
+                                                                ...adminData,
+                                                                email: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted mb-0">{adminData.email}</p>
+                                                )}
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div className="row">
+                                            <div className="col-sm-3">
+                                                <p className="mb-0">Phone</p>
+                                            </div>
+                                            <div className="col-sm-9">
+                                                {editMode ? (
+                                                    <input
+                                                        type="text"
+                                                        value={adminData.phone}
+                                                        className="form-control"
+                                                        name="name"
+
+                                                        onChange={(e) =>
+                                                            setAdminData({
+                                                                ...adminData,
+                                                                phone: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted mb-0">{adminData.phone}</p>
+                                                )}
+
+                                            </div>
+                                        </div>
+                                        <hr />
+
+
+                                    </div>
+                                </div>
+                                {/* <div className="row">
                                 <div className="col-md-6">
                                     <div className="card mb-4 mb-md-0">
                                         <div className="card-body">
@@ -303,12 +304,12 @@ function AdminProfile() {
                                     </div>
                                 </div>
                             </div> */}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-</div>
+            </div>
 
 
         </>

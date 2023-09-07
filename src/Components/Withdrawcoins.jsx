@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, TextField } from '@mui/material';
+import { Button, Pagination, PaginationItem, TextField } from '@mui/material';
 import { Edit, Visibility } from '@mui/icons-material';
 import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
@@ -17,6 +17,8 @@ function Withdrawcoins() {
     const [endDate, setEndDate] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = React.useState('all'); //
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10; // Number of items per page
 
     // Define options for the dropdown
     const options = [
@@ -41,6 +43,12 @@ function Withdrawcoins() {
 
     const handleStatusFilterChange = (event) => {
         setStatusFilter(event.target.value);
+    };
+
+    const sliceDataForPage = () => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return tableData.slice(startIndex, endIndex);
     };
 
 
@@ -334,29 +342,28 @@ function Withdrawcoins() {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div className="pagination-container">
-                                                    <div style={{ marginRight: '6px' }} className="dataTables_info" id="table_id_info" role="status" aria-live="polite">
-                                                        <span style={{ fontSize: '1rem' }}>  Showing 1 to 2 of 2 entries</span>
-                                                    </div>
-                                                    <div className="dataTables_paginate paging_simple_numbers" id="table_id_paginate">
-                                                        <ul className="pagination">
-                                                            <li className="paginate_button page-item previous disabled" id="table_id_previous">
-                                                                <a href="#" aria-controls="table_id" data-dt-idx={0} tabIndex={0} className="page-link">
-                                                                    Previous
-                                                                </a>
-                                                            </li>
-                                                            <li className="paginate_button page-item active">
-                                                                <a href="#" aria-controls="table_id" data-dt-idx={1} tabIndex={0} className="page-link">1</a>
-                                                            </li>
-                                                            <li className="paginate_button page-item next disabled" id="table_id_next">
-                                                                <a href="#" aria-controls="table_id" data-dt-idx={2} tabIndex={0} className="page-link">Next</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                
                                                 <br /><br />
                                                 <center>
                                                     <div>
+                                                        <div className="pagination-container">
+                                                            <Pagination
+                                                                count={Math.ceil(tableData.length / ITEMS_PER_PAGE)}
+                                                                page={currentPage}
+                                                                onChange={(event, page) => setCurrentPage(page)}
+                                                                renderItem={(item) => (
+                                                                    <PaginationItem
+                                                                        component="a"
+                                                                        href="#"
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            setCurrentPage(item.page);
+                                                                        }}
+                                                                        {...item}
+                                                                    />
+                                                                )}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </center>
                                                 {/* fund history */}
