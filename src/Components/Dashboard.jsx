@@ -20,57 +20,37 @@ import axios from 'axios';
 
 
 function Dashboard() {
-    const [totalUsers, setTotalUsers] = useState(15000);
-    const [todayUser, setTodayUser] = useState(13240);
-    const [activeUsers, setActiveUsers] = useState(18240);
-    const [blockUsers, setBlockUsers] = useState(1500);
-    const [totalUsersAvarage, setTotalUsersAvarage] = useState(50);
     const [todayUserAvarage, setTodayUserAvarage] = useState(75);
-    const [activeUsersAvarage, setActiveUsersAvarage] = useState(84);
-    const [blockUsersAvarage, setBlockUsersAvarage] = useState(78);
-
-    const [startDateFilter, setStartDateFilter] = useState('');
-    const [endDateFilter, setEndDateFilter] = useState('');
-    const [filteredRangeWithdraw, setFilteredRangeWithdraw] = useState(null);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [data, setData] = useState([]);
 
 
+    // const handleStartDateChange = (e) => {
+    //     setStartDateFilter(e.target.value);
+    // };
 
-    const initialData = {
-        rangeDeposits: 0,
-        totalDeposits: 0,
-        todayDeposits: 0,
-        rangeWithdraw: 0,
-        totalWithdraw: 0,
-        todayWithdraw: 0,
-        totalUsers: 0,
-        blockedUsers: 0,
-        completedChallenges: 0,
-        ongoingChallenges: 0,
-        createdChallenges: 0,
-        cancelledChallenges: 0,
-        judgementChallenges: 0,
-        commission: 0,
-        todayCommission: 0,
-        penaltyCoins: 0,
+    // const handleEndDateChange = (e) => {
+    //     setEndDateFilter(e.target.value);
+    // };
+
+    const pad = (number) => {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
     };
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+    var day = currentDate.getDate();
+    var formattedDate = pad(day) + "-" + pad(month) + "-" + year;
 
-    const [data, setData] = useState(initialData);
-
-
-    const handleStartDateChange = (e) => {
-        setStartDateFilter(e.target.value);
-    };
-
-    const handleEndDateChange = (e) => {
-        setEndDateFilter(e.target.value);
-    };
-
-    
     const fetchDetails = async () => {
         try {
             const body = {
-                startDate: "20-08-2023",
-                endDate: "20-08-2023"
+                startDate: startDate ? startDate : "20-08-2023",
+                endDate: endDate ? endDate : formattedDate
             }
 
             const accessToken = localStorage.getItem('access_token');
@@ -96,6 +76,27 @@ function Dashboard() {
         <>
             <Box sx={{ display: 'flex', flexDirection: "column" }}>
                 <section className='section'>
+                    <form role="form" type="submit">
+                        {/* <input type="hidden" name="_token" defaultValue="eLkpGsUBYr9izTDYhoNZCCY6pxm06c8hRkw1N41O" /> */}
+                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                            <div className="form-group">
+                                <label>Pick a start date:</label>
+                                <div className="input-group date" id="datepicker" data-target-input="nearest">
+                                    <input type="date" className="form-control t" placeholder="yyyy-mm-dd" name="start_date" onChange={(e) => setStartDate(e.target.value)} value={startDate} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-md-6 mb-6" style={{ float: 'left', marginTop: 10 }}>
+                            <div className="form-group">
+                                <label>Pick a end date:</label>
+                                <div className="input-group date" id="datepicker1" data-target-input="nearest">
+                                    <input type="date" className="form-control " placeholder="yyyy-mm-dd" name="end_date" onChange={(e) => setEndDate(e.target.value)} value={endDate} />
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </form>
                     <div className="container-heading">
                         <h1>User Overview</h1>
                     </div>
@@ -140,7 +141,7 @@ function Dashboard() {
                         <div className="small-box bg-info">
                             <p>Active Users</p>
                             <div className="inner">
-                                <h3><CountUp end={activeUsers} duration={5} /></h3>
+                                <h3><CountUp end={data.totalUsers - data.blockedUsers} duration={5} /></h3>
                             </div>
                             {/* <h2>{activeUsersAvarage}% then last week</h2> */}
                             <div className="icon">
@@ -181,7 +182,7 @@ function Dashboard() {
                             <div className="inner">
                                 <h3><CountUp end={data.createdChallenges} duration={5} /></h3>
                             </div>
-                            <h2><CountUp end={todayUserAvarage} duration={5} />% then last week</h2>
+                            <h2><CountUp end={data?.createdChallenges} duration={5} />% then last week</h2>
                             <div className="icon">
                                 < RunningWithErrorsIcon className="fas fa-shopping-cart" />
                             </div>
@@ -207,7 +208,16 @@ function Dashboard() {
                             <div className="icon">
                                 < CancelIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
                             </div>
-
+                        </div>
+                        <div className="small-box bg-info">
+                            <p>Judgement Challenge</p>
+                            <div className="inner">
+                                <h3><CountUp end={data.judgementChallenges} duration={5} /></h3>
+                            </div>
+                            {/* <h2>{<CountUp end={activeUsersAvarage} duration={5} />}% then last week</h2> */}
+                            <div className="icon">
+                                < CancelIcon sx={{ color: "#ff4444" }} className="fas fa-shopping-cart" />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -246,7 +256,7 @@ function Dashboard() {
                         </div>
 
                         <div className="small-box bg-range">
-                            <p>Range</p>
+                            <p>Range Deposits</p>
                             <div className="inner">
                                 <h3>{data.rangeDeposits}</h3>
 
