@@ -13,6 +13,17 @@ function AdminPanelTable() {
 
     const navigate = useNavigate();
     const [selectedUserIndex, setSelectedUserIndex] = useState(-1); // Initialize with -1
+    const [permissions, setPermissions] = useState({
+        block_user: false,
+        add_coins: false,
+        withdraw_coins: false,
+        challenge_result: false,
+        settings: false,
+        manage_admin: false,
+    });
+
+
+
     const handleEditClick = (index) => {
         setSelectedUserIndex(index); // Set the selected user index
     };
@@ -23,7 +34,89 @@ function AdminPanelTable() {
     };
 
 
+    const handlePermissionChange = (event) => {
+        const { name, checked } = event.target;
+        setPermissions((prevPermissions) => ({
+            ...prevPermissions,
+            [name]: checked,
+        }));
+    };
 
+    // const handleEditClick = (index) => {
+    //     setSelectedUserIndex(index);
+
+    //     // Assuming you have the permissions data for the selected admin
+    //     const selectedUserPermissions = {
+    //         block_user: true, // Set to true or false based on your data
+    //         add_coins: false,
+    //         withdraw_coins: false,
+    //         challenge_result: false,
+    //         settings: false,
+    //         manage_admin: false,
+    //     };
+
+    //     setPermissions(selectedUserPermissions);
+    // };
+
+    const handleSavePermissions = () => {
+        // Assuming you have the adminId of the selected user and updated permissions
+        const adminId = activeTableData[selectedUserIndex]?.adminId; // Replace with your data retrieval logic
+        const updatedPermissions = permissions;
+
+        // Send the updated permissions to the server using an API request
+        // Example code (assuming you have an async function for API calls):
+        // try {
+        //   await updatePermissions(adminId, updatedPermissions);
+        //   // Handle success (e.g., show a success message)
+        //   console.log('Permissions updated successfully');
+        // } catch (error) {
+        //   // Handle errors (e.g., show an error message)
+        //   console.error('Error updating permissions:', error);
+        // }
+
+        // Reset selectedUserIndex to -1 to close the modal
+        setSelectedUserIndex(-1);
+    };
+
+
+    // const handleCloseEditModal = () => {
+    //     // Reset the selected user index to close the modal
+    //     setSelectedUserIndex(-1);
+
+    //     // Assuming you have the adminId of the selected user and updated permissions
+    //     const adminId = activeTableData[selectedUserIndex]?.adminId; // Replace with your data retrieval logic
+    //     const updatedPermissions = {
+    //       block_user: permissions.block_user,
+    //       add_coins: permissions.add_coins,
+    //       withdraw_coins: permissions.withdraw_coins,
+    //       challenge_result: permissions.challenge_result,
+    //       settings: permissions.settings,
+    //       manage_admin: permissions.manage_admin,
+    //     };
+
+    //     // Send the updated permissions to the server
+    //     sendPermissionUpdate(adminId, updatedPermissions);
+    //   };
+
+    // const sendPermissionUpdate = async (adminId, permissions) => {
+    //     try {
+    //       const accessToken = localStorage.getItem('access_token');
+    //       const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
+    //       const response = await axios.post(`${baseURL}/admin/permissions`, {
+    //         adminId: adminId,
+    //         permission: permissions,
+    //       }, {
+    //         headers: headers,
+    //       });
+
+    //       // Handle the response as needed (e.g., show a success message)
+    //       console.log('Permission update successful:', response.data);
+    //     } catch (error) {
+    //       // Handle errors (e.g., show an error message)
+    //       console.error('Error updating permissions:', error);
+    //     }
+    //   };
 
 
     const renderedActiveTableRows = activeTableData.map((data, index) => {
@@ -44,6 +137,72 @@ function AdminPanelTable() {
                         <div>
                             <p>Edit Permissions</p>
                             <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="block_user"
+                                        checked={permissions.block_user}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Block User
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="add_coins"
+                                        checked={permissions.add_coins}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Add Coins
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="withdraw_coins"
+                                        checked={permissions.withdraw_coins}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Withdraw coins
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="challenge_result"
+                                        checked={permissions.challenge_result}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Challenge Result
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="settings"
+                                        checked={permissions.settings}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Settings
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="manage_admin"
+                                        checked={permissions.manage_admin}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Manage Admin
+                                </label>
+                            </div>
+                            {/* <div>
                                 <Checkbox id="permission1" name="permission1" />
                                 <label htmlFor="permission1">Permission 1</label>
                             </div>
@@ -58,8 +217,9 @@ function AdminPanelTable() {
                             <div>
                                 <Checkbox id="permission4" name="permission4" />
                                 <label htmlFor="permission4">Permission 4</label>
-                            </div>
-                            <Button onClick={handleCloseEditModal}>Send</Button>
+                            </div> */}
+                            <Button onClick={handleCloseEditModal}>Cancel</Button>
+                            <Button onClick={handleSavePermissions}>Send</Button>
                         </div>
                     )}
                 </TableCell>
@@ -88,10 +248,72 @@ function AdminPanelTable() {
                         <div>
                             <p>Edit Permissions</p>
                             <div>
-                                <Checkbox id="permission1" name="permission1" />
-                                <label htmlFor="permission1">Permission 1</label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="block_user"
+                                        checked={permissions.block_user}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Block User
+                                </label>
                             </div>
                             <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="add_coins"
+                                        checked={permissions.add_coins}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Add Coins
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="withdraw_coins"
+                                        checked={permissions.withdraw_coins}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Withdraw coins
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="challenge_result"
+                                        checked={permissions.challenge_result}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Challenge Result
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="settings"
+                                        checked={permissions.settings}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Settings
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="manage_admin"
+                                        checked={permissions.manage_admin}
+                                        onChange={handlePermissionChange}
+                                    />
+                                    Manage Admin
+                                </label>
+                            </div>
+                            {/* <div>
                                 <Checkbox id="permission2" name="permission2" />
                                 <label htmlFor="permission2">Permission 2</label>
                             </div>
@@ -102,8 +324,9 @@ function AdminPanelTable() {
                             <div>
                                 <Checkbox id="permission4" name="permission4" />
                                 <label htmlFor="permission4">Permission 4</label>
-                            </div>
-                            <Button onClick={handleCloseEditModal}>Send</Button>
+                            </div> */}
+                            <Button onClick={handleCloseEditModal}>Cancel</Button>
+                            <Button onClick={handleSavePermissions}>Send</Button>
                         </div>
                     )}
                 </TableCell>

@@ -26,6 +26,23 @@ function Dashboard() {
     const [data, setData] = useState([]);
 
 
+    function formatDate(inputDate) {
+        const parts = inputDate.split('-'); // Split the input date by hyphens
+        if (parts.length !== 3) {
+            // Ensure the input date is in the expected format
+            return 'Invalid Date';
+        }
+
+        const year = parts[0].substring(2); // Get the last two digits of the year
+        const month = parts[1]; // Month remains the same
+        const day = parts[2]; // Day remains the same
+
+        return day + ' ' + month + ' ' + year;
+    }
+
+    const start_date = formatDate(startDate);
+    const end_date = formatDate(endDate);
+
     // const handleStartDateChange = (e) => {
     //     setStartDateFilter(e.target.value);
     // };
@@ -49,10 +66,11 @@ function Dashboard() {
     const fetchDetails = async () => {
         try {
             const body = {
-                startDate: startDate ? startDate : "20-08-2023",
-                endDate: endDate ? endDate : formattedDate
+                startDate: startDate ? start_date : "20-08-2023",
+                endDate: endDate ? end_date : formattedDate
             }
 
+            console.log(body);
             const accessToken = localStorage.getItem('access_token');
             const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
             console.log("headers", headers);
@@ -62,7 +80,6 @@ function Dashboard() {
             });
             console.log(response.data);
             setData(response.data.data);
-
         } catch (err) {
             console.log(err);
         }
@@ -71,6 +88,9 @@ function Dashboard() {
     useEffect(() => {
         fetchDetails();
     }, [])
+    useEffect(() => {
+        fetchDetails();
+    }, [startDate, endDate])
 
     return (
         <>
