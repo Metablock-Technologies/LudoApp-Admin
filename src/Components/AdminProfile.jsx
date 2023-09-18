@@ -47,6 +47,11 @@ function AdminProfile() {
         fetchDetails();
     }, []);
 
+    const handleLogout = () => {
+        localStorage.removeItem("access_token");
+        localStorage.clear();
+        navigate('/')
+    }
     return (
 
         <>
@@ -82,7 +87,7 @@ function AdminProfile() {
                                                         Cancel
                                                     </button>
                                                     <button
-                                                    style={{marginLeft:'1rem'}}
+                                                        style={{ marginLeft: '1rem' }}
 
                                                         type="button"
                                                         className="btn btn-outline-primary ms-1"
@@ -104,8 +109,13 @@ function AdminProfile() {
                                                 </>
                                             )}
 
-
                                         </div>
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary ms-1"
+                                            onClick={handleLogout}>
+                                            Logout
+                                        </button>
                                     </div>
                                 </div>
                                 {/* <div className="card mb-4 mb-lg-0">

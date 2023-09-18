@@ -13,7 +13,7 @@ function AdminRegistrationPage() {
         username: '',
         password: '',
     });
-
+    const [message, setMessage] = useState("");
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -43,6 +43,7 @@ function AdminRegistrationPage() {
             if (response.status === 200) {
                 localStorage.setItem('access_token', response.data.data.accessToken);
             }
+            setMessage(response?.data?.data?.message)
 
             // if (response.status === 200) {
             //     setIsPhoneNumberVerified(true);
@@ -60,6 +61,8 @@ function AdminRegistrationPage() {
         }
         catch (err) {
             console.log(err);
+            setMessage(err?.response?.data?.message)
+
             // Enable the Get OTP button
         }
     };
@@ -114,6 +117,7 @@ function AdminRegistrationPage() {
                     value={formData.password}
                     onChange={handleInputChange}
                 />
+                <p style={{ color: "black" }}>{message}</p>
                 <Button
                     variant="contained"
                     color="primary"

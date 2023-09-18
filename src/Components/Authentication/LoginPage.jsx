@@ -47,9 +47,13 @@ function AdminLoginPage() {
             // console.log(response.data.data.token);
             console.log(response);
             if (response.status === 200) {
-                localStorage.setItem('access_token', response.data.data.token);
+                // localStorage.setItem('access_token', response.data.data.token);
+                const now = new Date();
+                const expirationDate = new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000); // 10 days from now
+                localStorage.setItem('access_token', response?.data?.data?.token);
+                localStorage.setItem('access_token_expiration', expirationDate.toISOString());
                 setLoginSuccessful(true);
-                navigate('/dashboard')
+                navigate('/')
             }
 
             setEmailError('');

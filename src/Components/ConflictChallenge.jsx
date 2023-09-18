@@ -26,6 +26,7 @@ function GameJudgement() {
     const [acceptor, setAcceptor] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
 
+    const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
         // Delay the animation to allow rendering first
@@ -43,13 +44,24 @@ function GameJudgement() {
 
 
     //dialog box
-
-    const handleOpenDialog = () => {
+    const handleOpenDialog = (imageUrl) => {
         setOpenDialog(true);
+        setImageSrc(imageUrl);
+        // fetch(`${baseURL}/image/${imageUrl}`)
+        //     .then((response) => response.blob())
+        //     .then((blob) => {
+        //         const objectURL = URL.createObjectURL(blob);
+        //         console.log(objectURL)
+        //         setImageSrc(objectURL);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error fetching image:', error);
+        //     });
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+        setImageSrc("");
     };
 
 
@@ -61,12 +73,10 @@ function GameJudgement() {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = currentPage * ITEMS_PER_PAGE;
 
-
     const handleImageClick = (imageUrl) => {
         setSelectedImageUrl(imageUrl);
         setViewerOpen(!viewerOpen);
     };
-
 
     const handleReset = () => {
         setStartDate('');
@@ -155,28 +165,51 @@ function GameJudgement() {
             const accessToken = localStorage.getItem('access_token');
             const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
 
-            console.log(headers);
+            // console.log(headers);
             const response = await axios.get(baseURL + '/admin/challengeresults', {
                 headers: headers,
             });
 
-            console.log("responsegamejudgement", response.data);
+            // console.log("responsegamejudgement", response.data);
 
             // Filter challenges with status "judgement"
             const judgementChallenges = response.data.data.filter(data => data.status === 'judgement');
-
             setTabledata(judgementChallenges);
+
+            // judgementChallenges.forEach(data => {
+            //     const createdAt = new Date(data?.createdAt);
+            //     const currentTime = new Date();
+            //     const nineMinutesAgo = new Date(currentTime - 1 * 60 * 1000); // 8 minutes ago
+            //     // const nineMinutesAgo = new Date(currentTime - 8 * 60 * 1000); // 8 minutes ago
+            //     console.log(nineMinutesAgo, currentTime);
+
+            //     if (createdAt <= nineMinutesAgo) {
+            //         console.log("created at time is small than new time ");
+            //         console.log(!data?.result?.challenger_input);
+            //         console.log(!data?.result?.acceptor_input);
+            //         if (data?.result?.challenger_input || data?.result?.acceptor_input) {
+            //             console.log("in main condition");
+            //             if (data?.result?.challenger_input === false || (data?.result?.challenger_input === false && !data?.result?.challenger_image)) {
+            //                 console.log(("acceptor won"));
+            //                 acceptreject(data?.id, data?.acceptor, "rejected");
+            //             } else if (data?.result?.acceptor_input === false || (data?.result?.acceptorr_input === true && !data?.result?.acceptorr_image)) {
+            //                 console.log(("cahllenger won"));
+            //                 acceptreject(data?.id, data?.challenger, "rejected");
+            //             }
+            //         }
+            //     }
+            // });
         }
         catch (err) {
             console.log(err);
         }
     };
-    const acceptreject = async (id, winnerid) => {
+    const acceptreject = async (id, winnerid, type) => {
         try {
             const requestbody = {
                 challengeId: id,
                 winnerId: winnerid,
-                type: selectedValue
+                type: type ? type : selectedValue
             }
             console.log(requestbody);
             const accessToken = localStorage.getItem('access_token');
@@ -197,7 +230,19 @@ function GameJudgement() {
     };
 
     useEffect(() => {
+        console.log(("judgements", new Date()));
         gamejudgement();
+
+        // const updateInterval = setInterval(() => {
+        //     // console.log("10 minutes has been completyed", new Date());
+        //     gamejudgement();
+        //     // }, 600);   //10 minutes
+        // }, 6000);   //10 minutes
+
+        // return () => {
+        //     // Clear the interval when the component is unmounted
+        //     clearInterval(updateInterval);
+        // };
     }, [])
 
     const renderedTableRows = filteredData.slice(startIndex, endIndex).map((data, index) => {
@@ -222,7 +267,7 @@ function GameJudgement() {
                     <Button
                         variant="outlined"
                         color="primary"
-                        onClick={() => acceptreject(data.id, data?.result?.winner)}
+                        onClick={() => acceptreject(data.id, data?.challenger)}
                     >
                         <div
                             style={{
@@ -252,7 +297,7 @@ function GameJudgement() {
                 }
             </td>
             <td>
-                <Button color="primary" onClick={() => handleOpenDialog(data?.result.challenger_image)}>
+                <Button color="primary" onClick={() => handleOpenDialog(data?.result?.challenger_image)}>
                     <Visibility />
                 </Button>
             </td>
@@ -265,7 +310,7 @@ function GameJudgement() {
                     <Button
                         variant="outlined"
                         color="primary"
-                        onClick={() => acceptreject(data?.id, data?.challenger)}
+                        onClick={() => acceptreject(data?.id, data?.acceptor)}
                     >
                         <div
                             style={{
@@ -360,10 +405,11 @@ function GameJudgement() {
 
         <>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Dialog Title</DialogTitle>
+                <DialogTitle>Image</DialogTitle>
                 <DialogContent>
                     {/* Add your dialog content here */}
-                    <p>This is the dialog content.</p>
+                    {imageSrc ? <img src={`https://backened.ludokavish.com/api/v1/image/${imageSrc}`} alt="Preview" /> : 'Loading...'}
+                    {/* <p>This is the dialog content.</p> */}
                 </DialogContent>
             </Dialog>
             <div className='fade-in'>

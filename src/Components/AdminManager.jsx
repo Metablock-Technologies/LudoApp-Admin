@@ -6,6 +6,7 @@ import { baseURL } from '../token';
 import axios from 'axios';
 import "../Components/styles/AdminManager.css"
 import { useNavigate } from 'react-router-dom';
+
 function AdminPanelTable() {
     const [activeTableData, setActiveTableData] = useState([]);
     const [inactiveTableData, setInactiveTableData] = useState([])
@@ -22,16 +23,14 @@ function AdminPanelTable() {
         manage_admin: false,
     });
 
-
-
     const handleEditClick = (index) => {
         setSelectedUserIndex(index); // Set the selected user index
     };
 
-    const handleCloseEditModal = () => {
-        setSelectedUserIndex(-1); // Reset the selected user index to close the modal
-        fetchUserData();
-    };
+    // const handleCloseEditModal = () => {
+    //     setSelectedUserIndex(-1); // Reset the selected user index to close the modal
+    //     fetchUserData();
+    // };
 
 
     const handlePermissionChange = (event) => {
@@ -58,65 +57,87 @@ function AdminPanelTable() {
     //     setPermissions(selectedUserPermissions);
     // };
 
-    const handleSavePermissions = () => {
-        // Assuming you have the adminId of the selected user and updated permissions
-        const adminId = activeTableData[selectedUserIndex]?.adminId; // Replace with your data retrieval logic
-        const updatedPermissions = permissions;
-
-        // Send the updated permissions to the server using an API request
-        // Example code (assuming you have an async function for API calls):
-        // try {
-        //   await updatePermissions(adminId, updatedPermissions);
-        //   // Handle success (e.g., show a success message)
-        //   console.log('Permissions updated successfully');
-        // } catch (error) {
-        //   // Handle errors (e.g., show an error message)
-        //   console.error('Error updating permissions:', error);
-        // }
-
-        // Reset selectedUserIndex to -1 to close the modal
-        setSelectedUserIndex(-1);
-    };
-
-
-    // const handleCloseEditModal = () => {
-    //     // Reset the selected user index to close the modal
-    //     setSelectedUserIndex(-1);
-
+    // const handleSavePermissions = () => {
     //     // Assuming you have the adminId of the selected user and updated permissions
     //     const adminId = activeTableData[selectedUserIndex]?.adminId; // Replace with your data retrieval logic
-    //     const updatedPermissions = {
-    //       block_user: permissions.block_user,
-    //       add_coins: permissions.add_coins,
-    //       withdraw_coins: permissions.withdraw_coins,
-    //       challenge_result: permissions.challenge_result,
-    //       settings: permissions.settings,
-    //       manage_admin: permissions.manage_admin,
-    //     };
+    //     const updatedPermissions = permissions;
+    //     // console.log(permissions);
+    //     // const paramss= {
+    //     //     permission: permissions
+    //     // }
+    //     // const response = axios
+    //     setSelectedUserIndex(-1);
+    // };
 
-    //     // Send the updated permissions to the server
-    //     sendPermissionUpdate(adminId, updatedPermissions);
-    //   };
 
-    // const sendPermissionUpdate = async (adminId, permissions) => {
-    //     try {
-    //       const accessToken = localStorage.getItem('access_token');
-    //       const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+    const handleCloseEditModal = () => {
+        // Reset the selected user index to close the modal
+        setSelectedUserIndex(-1);
+        fetchUserData();
+    };
 
-    //       const response = await axios.post(`${baseURL}/admin/permissions`, {
-    //         adminId: adminId,
-    //         permission: permissions,
-    //       }, {
-    //         headers: headers,
-    //       });
+    const handleSaveInactivePermissions = async () => {
+        try {
+            console.log(inactiveTableData);
+            const adminId = inactiveTableData[selectedUserIndex]?.id; // Replace with your data retrieval logic
+            const updatedPermissions = {
+                block_user: permissions.block_user,
+                add_coins: permissions.add_coins,
+                withdraw_coins: permissions.withdraw_coins,
+                challenge_result: permissions.challenge_result,
+                settings: permissions.settings,
+                manage_admin: permissions.manage_admin,
+            };
 
-    //       // Handle the response as needed (e.g., show a success message)
-    //       console.log('Permission update successful:', response.data);
-    //     } catch (error) {
-    //       // Handle errors (e.g., show an error message)
-    //       console.error('Error updating permissions:', error);
-    //     }
-    //   };
+            const accessToken = localStorage.getItem('access_token');
+            const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
+            const response = await axios.post(`${baseURL}/admin/permissions`, {
+                adminId: adminId,
+                permission: updatedPermissions,
+            }, {
+                headers: headers,
+            });
+
+            // Handle the response as needed (e.g., show a success message)
+            console.log('Permission update successful:', response.data);
+            setSelectedUserIndex(-1);
+        } catch (error) {
+            // Handle errors (e.g., show an error message)
+            console.error('Error updating permissions:', error);
+        }
+    };
+    const handleSavePermissions = async () => {
+        try {
+            console.log(activeTableData);
+            const adminId = activeTableData[selectedUserIndex]?.id; // Replace with your data retrieval logic
+            const updatedPermissions = {
+                block_user: permissions.block_user,
+                add_coins: permissions.add_coins,
+                withdraw_coins: permissions.withdraw_coins,
+                challenge_result: permissions.challenge_result,
+                settings: permissions.settings,
+                manage_admin: permissions.manage_admin,
+            };
+
+            const accessToken = localStorage.getItem('access_token');
+            const headers = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+
+            const response = await axios.post(`${baseURL}/admin/permissions`, {
+                adminId: adminId,
+                permission: updatedPermissions,
+            }, {
+                headers: headers,
+            });
+
+            // Handle the response as needed (e.g., show a success message)
+            console.log('Permission update successful:', response.data);
+            setSelectedUserIndex(-1);
+        } catch (error) {
+            // Handle errors (e.g., show an error message)
+            console.error('Error updating permissions:', error);
+        }
+    };
 
 
     const renderedActiveTableRows = activeTableData.map((data, index) => {
@@ -326,7 +347,7 @@ function AdminPanelTable() {
                                 <label htmlFor="permission4">Permission 4</label>
                             </div> */}
                             <Button onClick={handleCloseEditModal}>Cancel</Button>
-                            <Button onClick={handleSavePermissions}>Send</Button>
+                            <Button onClick={handleSaveInactivePermissions}>Send</Button>
                         </div>
                     )}
                 </TableCell>

@@ -934,6 +934,8 @@ function UserManager() {
                                                 <option value="judgement">judgement</option>
                                                 <option value="created">created</option>
                                                 <option value="running">running</option>
+                                                <option value="completed">completed</option>
+                                                <option value="cancelled">cancelled</option>
                                             </select>
                                         </div>
                                         <br />

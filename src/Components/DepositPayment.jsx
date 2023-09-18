@@ -5,6 +5,7 @@ import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
 import axios from 'axios';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 
 function Addcoins() {
@@ -21,6 +22,9 @@ function Addcoins() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     // Define options for the dropdown
 
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const [imageSrc, setImageSrc] = useState('');
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -174,6 +178,27 @@ function Addcoins() {
         return dataDate >= start && dataDate <= end;
     });
 
+    //dialog box
+    const handleOpenDialog = (imageUrl) => {
+        setOpenDialog(true);
+        setImageSrc(imageUrl);
+        // fetch(`${baseURL}/image/${imageUrl}`)
+        //     .then((response) => response.blob())
+        //     .then((blob) => {
+        //         const objectURL = URL.createObjectURL(blob);
+        //         console.log(objectURL)
+        //         setImageSrc(objectURL);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error fetching image:', error);
+        //     });
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        setImageSrc("");
+    };
+
     const renderedTableRows = filteredData.slice(startIndex, endIndex).map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
@@ -183,7 +208,7 @@ function Addcoins() {
             <td>{index + 1}</td>
             <td>{data.amount}</td>
             <td>
-                <Button color="primary" onClick={() => handleImageClick(data?.image)}>
+                <Button color="primary" onClick={() => handleOpenDialog(data?.image)}>
                     <Visibility sx={{ color: '#3b3ba3' }} />
                 </Button>
             </td>
@@ -228,6 +253,14 @@ function Addcoins() {
 
     return (
         <>
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Image</DialogTitle>
+                <DialogContent>
+                    {/* Add your dialog content here */}
+                    {imageSrc ? <img src={`https://backened.ludokavish.com/api/v1/image/${imageSrc}`} alt="Preview" /> : 'Loading...'}
+                    {/* <p>This is the dialog content.</p> */}
+                </DialogContent>
+            </Dialog>
             <div className='fade-in'>
                 <div style={{ paddingLeft: '2rem', marginTop: '4rem', paddingBottom: '2rem', borderBottom: '1px solid white' }}>
                     <h3 style={{ color: 'white' }}> Deposit Payment</h3>
@@ -311,13 +344,6 @@ function Addcoins() {
                                             {/* fund history */}
                                             <div id="table_id_wrapper" className="dataTables_wrapper dt-bootstrap4 no-footer">
                                                 <div className="table-responsive">
-                                                    {viewerOpen && (
-                                                        // <ImageViewer imageUrl={selectedImageUrl} />
-                                                        <div>
-                                                            <a href={baseURL + "/image/" + selectedImageUrl} alt="Acceptor Image">Link to image</a>
-                                                            {/* <a target="_blank" href={imageurl} src={imageurl} alt="Acceptor Image" /> */}
-                                                        </div>
-                                                    )}
                                                     <table className="table text-center dataTable no-footer dtr-inline" id="table_id" role="grid" aria-describedby="table_id_info" style={{}}>
                                                         <thead className="text-capitalize">
                                                             {/* <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">SR. NO.</th> */}
