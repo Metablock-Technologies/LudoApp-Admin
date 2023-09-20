@@ -408,7 +408,7 @@ function GameJudgement() {
                 <DialogTitle>Image</DialogTitle>
                 <DialogContent>
                     {/* Add your dialog content here */}
-                    {imageSrc ? <img src={`https://backened.ludokavish.com/api/v1/image/${imageSrc}`} alt="Preview" /> : 'Loading...'}
+                    {imageSrc ? <img src={`https://backened.ludokavish.com/api/v1/image/${imageSrc}`} alt="Preview" /> : 'No Image'}
                     {/* <p>This is the dialog content.</p> */}
                 </DialogContent>
             </Dialog>

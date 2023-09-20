@@ -47,11 +47,27 @@ function AdminProfile() {
         fetchDetails();
     }, []);
 
+    const removeAccessToken = () => {
+        return new Promise((resolve, reject) => {
+            try {
+                localStorage.removeItem('access_token');
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+
     const handleLogout = () => {
-        localStorage.removeItem("access_token");
-        localStorage.clear();
-        navigate('/')
+        removeAccessToken()
+            .then(() => {
+                navigate('/');
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
     }
+
     return (
 
         <>

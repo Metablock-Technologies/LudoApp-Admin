@@ -196,7 +196,8 @@ function Withdrawcoins() {
             <td>
                 <TextField
                     type="text"
-                    style={{ color: 'white' }}
+                    // style={{ color: 'black' }}
+                    style={{ height: '30px', width: '200px', color: "black" }}
                     placeholder="Enter message"
                     variant="outlined"
                     size="small"
@@ -342,7 +343,7 @@ function Withdrawcoins() {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                
+
                                                 <br /><br />
                                                 <center>
                                                     <div>

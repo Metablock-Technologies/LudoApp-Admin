@@ -216,6 +216,7 @@ function Addcoins() {
             <td>
                 <TextField
                     type="text"
+                    style={{ height: '30px', width: '200px', color: "black" }}
                     placeholder="Enter message"
                     variant="outlined"
                     size="small"

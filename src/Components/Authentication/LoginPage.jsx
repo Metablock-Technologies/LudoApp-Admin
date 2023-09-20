@@ -53,7 +53,7 @@ function AdminLoginPage() {
                 localStorage.setItem('access_token', response?.data?.data?.token);
                 localStorage.setItem('access_token_expiration', expirationDate.toISOString());
                 setLoginSuccessful(true);
-                navigate('/')
+                navigate('/dashboard')
             }
 
             setEmailError('');
