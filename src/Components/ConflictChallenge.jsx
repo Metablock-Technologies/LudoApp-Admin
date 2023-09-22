@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, IconButton } from '@mui/material';
+import { Button, TextField, IconButton, TablePagination } from '@mui/material';
 import { Pagination, PaginationItem, ArrowBackIcon, ArrowForwardIcon } from '@mui/material';
 
 import { Visibility, Check } from '@mui/icons-material';
@@ -28,6 +28,21 @@ function GameJudgement() {
 
     const [imageSrc, setImageSrc] = useState('');
 
+
+    // Pagination state
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0); // Reset the page to the first page when changing rows per page
+    };
     useEffect(() => {
         // Delay the animation to allow rendering first
         setTimeout(() => {
@@ -41,6 +56,7 @@ function GameJudgement() {
         });
         setFilteredtableData(filteredData);
     };
+
 
 
     //dialog box
@@ -245,7 +261,7 @@ function GameJudgement() {
         // };
     }, [])
 
-    const renderedTableRows = filteredData.slice(startIndex, endIndex).map((data, index) => {
+    const renderedTableRows = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
         const formattedTime = createdAt.toLocaleTimeString();
@@ -538,21 +554,14 @@ function GameJudgement() {
                                                     </div>
                                                     {/* Add pagination */}
                                                     <div className="pagination-container">
-                                                        <Pagination
-                                                            count={totalPages}
-                                                            page={currentPage}
-                                                            onChange={(event, page) => setCurrentPage(page)}
-                                                            renderItem={(item) => (
-                                                                <PaginationItem
-                                                                    component="a"
-                                                                    href="#"
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        setCurrentPage(item.page);
-                                                                    }}
-                                                                    {...item}
-                                                                />
-                                                            )}
+                                                        <TablePagination
+                                                            component="div"
+                                                            count={filteredData.length}
+                                                            rowsPerPageOptions={[5, 10, 25]}
+                                                            rowsPerPage={rowsPerPage}
+                                                            page={page}
+                                                            onPageChange={handleChangePage}
+                                                            onRowsPerPageChange={handleChangeRowsPerPage}
                                                         />
                                                     </div>
                                                 </div>

@@ -5,6 +5,8 @@ import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
 import axios from 'axios';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import TablePagination from '@mui/material/TablePagination';
+
 
 
 
@@ -18,8 +20,8 @@ function Withdrawcoins() {
     const [searchQuery, setSearchQuery] = useState("");
     const [statusFilter, setStatusFilter] = React.useState('all'); //
     const [currentPage, setCurrentPage] = useState(1);
-    const ITEMS_PER_PAGE = 10; // Number of items per page
-
+    const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
+    const ITEMS_PER_PAGE = rowsPerPage;
     // Define options for the dropdown
     const options = [
         { value: 'option1', label: 'Option 1' },
@@ -45,11 +47,13 @@ function Withdrawcoins() {
         setStatusFilter(event.target.value);
     };
 
-    const sliceDataForPage = () => {
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        return tableData.slice(startIndex, endIndex);
-    };
+
+    // Calculate the start and end indices for the data slice based on the current page and rows per page.
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+
+    // Slice the data to display only the items for the current page.
+    const slicedData = tableData.slice(startIndex, endIndex);
 
 
     const withdrawcoins = async () => {
@@ -183,7 +187,7 @@ function Withdrawcoins() {
         const end = new Date(endDate);
         return dataDate >= start && dataDate <= end;
     });
-    const renderedTableRows = filteredData.map((data, index) => {
+    const renderedTableRows = slicedData.map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
         const formattedTime = createdAt.toLocaleTimeString();
@@ -348,21 +352,19 @@ function Withdrawcoins() {
                                                 <center>
                                                     <div>
                                                         <div className="pagination-container">
-                                                            <Pagination
-                                                                count={Math.ceil(tableData.length / ITEMS_PER_PAGE)}
-                                                                page={currentPage}
-                                                                onChange={(event, page) => setCurrentPage(page)}
-                                                                renderItem={(item) => (
-                                                                    <PaginationItem
-                                                                        component="a"
-                                                                        href="#"
-                                                                        onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            setCurrentPage(item.page);
-                                                                        }}
-                                                                        {...item}
-                                                                    />
-                                                                )}
+
+
+                                                            <TablePagination
+                                                                component="div"
+                                                                count={filteredData.length}
+                                                                rowsPerPageOptions={[5, 10, 25]}
+                                                                rowsPerPage={rowsPerPage}
+                                                                page={currentPage - 1}
+                                                                onPageChange={(event, newPage) => setCurrentPage(newPage + 1)}
+                                                                onRowsPerPageChange={(event) => {
+                                                                    setRowsPerPage(parseInt(event.target.value, 10));
+                                                                    setCurrentPage(1);
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>

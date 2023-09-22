@@ -5,6 +5,8 @@ import ImageViewer from './ImageViewer';
 import { baseURL } from '../token';
 import axios from 'axios';
 import "../Components/styles/AdminManager.css"
+import TablePagination from '@mui/material/TablePagination';
+
 import { useNavigate } from 'react-router-dom';
 
 function AdminPanelTable() {
@@ -14,6 +16,13 @@ function AdminPanelTable() {
 
     const navigate = useNavigate();
     const [selectedUserIndex, setSelectedUserIndex] = useState(-1); // Initialize with -1
+
+    const [activePage, setActivePage] = useState(0);
+    const [activeRowsPerPage, setActiveRowsPerPage] = useState(5);
+
+    const [inactivePage, setInactivePage] = useState(0);
+    const [inactiveRowsPerPage, setInactiveRowsPerPage] = useState(5);
+
     const [permissions, setPermissions] = useState({
         block_user: false,
         add_coins: false,
@@ -26,11 +35,30 @@ function AdminPanelTable() {
     const handleEditClick = (index) => {
         setSelectedUserIndex(index); // Set the selected user index
     };
+    const handleActivePageChange = (event, newPage) => {
+        setActivePage(newPage);
+    };
 
-    // const handleCloseEditModal = () => {
-    //     setSelectedUserIndex(-1); // Reset the selected user index to close the modal
-    //     fetchUserData();
-    // };
+    const handleActiveRowsPerPageChange = (event) => {
+        setActiveRowsPerPage(parseInt(event.target.value, 10));
+    };
+
+    const handleInactivePageChange = (event, newPage) => {
+        setInactivePage(newPage);
+    };
+
+    const handleInactiveRowsPerPageChange = (event) => {
+        setInactiveRowsPerPage(parseInt(event.target.value, 10));
+    };
+
+    const startIndexActive = activePage * activeRowsPerPage;
+    const endIndexActive = startIndexActive + activeRowsPerPage;
+
+    const startIndexInactive = inactivePage * inactiveRowsPerPage;
+    const endIndexInactive = startIndexInactive + inactiveRowsPerPage;
+
+    const displayedActiveData = activeTableData.slice(startIndexActive, endIndexActive);
+    const displayedInactiveData = inactiveTableData.slice(startIndexInactive, endIndexInactive);
 
 
     const handlePermissionChange = (event) => {
@@ -140,7 +168,7 @@ function AdminPanelTable() {
     };
 
 
-    const renderedActiveTableRows = activeTableData.map((data, index) => {
+    const renderedActiveTableRows = displayedActiveData.map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
         const formattedTime = createdAt.toLocaleTimeString();
@@ -251,7 +279,7 @@ function AdminPanelTable() {
         )
     });
 
-    const renderedInactiveTableRows = inactiveTableData.map((data, index) => {
+    const renderedInactiveTableRows = displayedInactiveData.map((data, index) => {
         const createdAt = new Date(data?.createdAt);
         const formattedDate = createdAt.toLocaleDateString();
         const formattedTime = createdAt.toLocaleTimeString();
@@ -493,6 +521,16 @@ function AdminPanelTable() {
                                                         Showing {activeTableData.length} active entries
                                                     </div>
                                                 </div>
+
+                                                <TablePagination
+                                                    component="div"
+                                                    count={activeTableData.length}
+                                                    rowsPerPageOptions={[5, 10, 25]}
+                                                    rowsPerPage={activeRowsPerPage}
+                                                    page={activePage}
+                                                    onPageChange={handleActivePageChange}
+                                                    onRowsPerPageChange={handleActiveRowsPerPageChange}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -526,6 +564,16 @@ function AdminPanelTable() {
                                                         Showing {inactiveTableData.length} inactive entries
                                                     </div>
                                                 </div>
+
+                                                <TablePagination
+                                                    component="div"
+                                                    count={inactiveTableData.length}
+                                                    rowsPerPageOptions={[5, 10, 25]}
+                                                    rowsPerPage={inactiveRowsPerPage}
+                                                    page={inactivePage}
+                                                    onPageChange={handleInactivePageChange}
+                                                    onRowsPerPageChange={handleInactiveRowsPerPageChange}
+                                                />
                                             </div>
                                         </div>
                                     </div>
