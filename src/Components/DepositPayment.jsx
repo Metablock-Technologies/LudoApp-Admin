@@ -248,7 +248,6 @@ function Addcoins() {
             <td>{formattedDate}</td>
             <td>{formattedTime}</td>
         </tr>)
-
     });
 
 
