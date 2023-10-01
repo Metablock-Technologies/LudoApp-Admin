@@ -250,7 +250,6 @@ function Addcoins() {
         </tr>)
     });
 
-
     return (
         <>
             <Dialog open={openDialog} onClose={handleCloseDialog}>

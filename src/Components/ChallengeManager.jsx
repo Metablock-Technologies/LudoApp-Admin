@@ -725,11 +725,13 @@ function UserManager() {
         return (
             <tr role="row" key={index}>
                 <td>{index + 1}</td>
+                <td>{data?.roomcode}</td>
                 <td>{data?.ChallengerUser?.username}</td>
                 <td>{data?.AcceptorUser?.username}</td>
                 <td>{data?.price}</td>
+                <td>{data?.result?.WinnerUser?.username}</td>
                 <td>{data?.status}</td>
-                <td>{data?.category}</td>
+                <td>{data?.category == "quick" ? "classic" : "snake"}</td>
                 <td>{formattedDate}</td>
                 <td>{formattedTime}</td>
             </tr>
@@ -961,9 +963,11 @@ function UserManager() {
                                                         {/* <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">SR. NO.</th> */}
                                                         <tr role="row">
                                                             <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">Sr.No.</th>
+                                                            <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">Room Code</th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Creator </th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Accepter </th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 105 }} aria-label="To User: activate to sort column ascending">Amount</th>
+                                                            <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 105 }} aria-label="To User: activate to sort column ascending">Winner_Name</th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Status</th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 81 }} aria-label="Time: activate to sort column ascending">Game Type </th>
                                                             <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 129 }} aria-label="Date: activate to sort column ascending">Date</th>

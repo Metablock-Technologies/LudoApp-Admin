@@ -257,7 +257,6 @@ export default function Header(props) {
                                 justifyContent: 'center',
                             }}
                         >
-
                             <AdminPanelSettingsIcon sx={{ color: "red", fontSize: "30px" }} />
                         </ListItemIcon>
                         <ListItemText primary="Admin Manager" sx={{ opacity: open ? 1 : 0 }} />

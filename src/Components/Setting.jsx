@@ -113,7 +113,7 @@ const Settings = () => {
                                                         id="fraud"
                                                         name="fraud"
                                                         placeholder="Fraud Penalty"
-                                                        value={penalties.fraud}
+                                                        value={penalties?.fraud}
                                                         onChange={handleInputChange}
                                                         readOnly={!isEditing}
                                                     />
@@ -128,7 +128,7 @@ const Settings = () => {
                                                         id="noupdate"
                                                         name="noupdate"
                                                         placeholder="No Update Penalty"
-                                                        value={penalties.noupdate}
+                                                        value={penalties?.noupdate}
                                                         onChange={handleInputChange}
                                                         readOnly={!isEditing}
                                                     />
@@ -143,7 +143,7 @@ const Settings = () => {
                                                         id="wrongupdate"
                                                         name="wrongupdate"
                                                         placeholder="Wrong Update Penalty"
-                                                        value={penalties.wrongupdate}
+                                                        value={penalties?.wrongupdate}
                                                         onChange={handleInputChange}
                                                         readOnly={!isEditing}
                                                     />
@@ -158,7 +158,7 @@ const Settings = () => {
                                                         id="commission"
                                                         name="commission"
                                                         placeholder="Platform Commission"
-                                                        value={penalties.commission}
+                                                        value={penalties?.commission}
                                                         onChange={handleInputChange}
                                                         readOnly={!isEditing}
                                                     />

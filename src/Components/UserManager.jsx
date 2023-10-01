@@ -17,6 +17,7 @@ function UserManager() {
     const [tabledata, settabledata] = useState([]);
     const [iconRotation, setIconRotation] = useState(0);
     const [selectedStatus, setSelectedStatus] = useState("");
+    const [isloading, setIsloading] = useState("");
 
     const fetchAdmindata = async () => {
         try {
@@ -82,7 +83,7 @@ function UserManager() {
     // pagination part 
     const handleBlockUser = async (userId, status) => {
         try {
-
+            setIsloading(true);
             const requestbody = {
                 userId: userId,
                 status: status
@@ -94,6 +95,7 @@ function UserManager() {
             const response = await axios.post(baseURL + '/admin/block', requestbody, {
                 headers: headers
             }); // Adjust the URL
+            setIsloading(false);
             if (response.status === 200) {
                 // Update the blockedUsers state or perform any necessary action
                 // setBlockedUsers([...blockedUsers, userId]);
@@ -102,6 +104,7 @@ function UserManager() {
             }
         } catch (error) {
             console.error('Error blocking user:', error);
+            setIsloading(false);
             // alert('An error occurred while blocking the user');
         }
     };
@@ -130,9 +133,11 @@ function UserManager() {
                 <td>{formattedDate}</td>
                 <td>{formattedTime}</td>
                 <td>
+                    {/* {isloading && <p>Loading...</p>} */}
                     {data?.blocked === false ? (
                         <button
                             className="btn btn-danger"
+                            disabled={isloading}
                             onClick={() => handleBlockUser(data?.id, true)} // Pass the user ID to the function
                         >
                             Block
@@ -140,6 +145,7 @@ function UserManager() {
                         :
                         (<button
                             className="btn btn-danger"
+                            disabled={isloading}
                             onClick={() => handleBlockUser(data?.id, false)} // Pass the user ID to the function
                         >
                             Unblock
@@ -216,7 +222,6 @@ function UserManager() {
                 <h3 style={{ color: 'white' }}>User Manager</h3>
             </div>
             <section style={{ marginTop: '2rem' }} className="content">
-
                 <div className="container-fluid" style={{ marginTop: '-35px' }}>
                     <div className="row">
                         {/* Primary table start */}

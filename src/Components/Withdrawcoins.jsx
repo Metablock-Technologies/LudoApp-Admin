@@ -80,7 +80,7 @@ function Withdrawcoins() {
             const message = inputValues[id] || '';
             const requestbody = {
                 id: id,
-                message: message,
+                message: message ? message : "no message",
                 status: status,
                 amount: amount
             }
@@ -97,6 +97,7 @@ function Withdrawcoins() {
             withdrawcoins();
         }
         catch (err) {
+            alert(err?.data?.data?.data?.message)
             console.log(err);
         }
     };

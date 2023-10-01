@@ -1,13 +1,12 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const AuthLayout = ({userData}) => {
-   
+const AuthLayout = ({ userData }) => {
+
     return (
         <>
-          <Outlet/>
+            <Outlet />
         </>
-
     )
 }
 

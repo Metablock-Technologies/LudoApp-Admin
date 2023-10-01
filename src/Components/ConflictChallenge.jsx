@@ -189,32 +189,56 @@ function GameJudgement() {
             // console.log("responsegamejudgement", response.data);
 
             // Filter challenges with status "judgement"
-            const judgementChallenges = response.data.data.filter(data => data.status === 'judgement');
+            const judgementChallenges = response?.data?.data?.filter(data => data.status === 'judgement');
             setTabledata(judgementChallenges);
 
-            // judgementChallenges.forEach(data => {
-            //     const createdAt = new Date(data?.createdAt);
-            //     const currentTime = new Date();
-            //     const nineMinutesAgo = new Date(currentTime - 1 * 60 * 1000); // 8 minutes ago
-            //     // const nineMinutesAgo = new Date(currentTime - 8 * 60 * 1000); // 8 minutes ago
-            //     console.log(nineMinutesAgo, currentTime);
+            judgementChallenges.forEach(data => {
+                const createdAt = new Date(data?.updatedAt);
+                const currentTime = new Date();
+                const nineMinutesAgo = new Date(currentTime - 10 * 60 * 1000); // 8 minutes ago
+                // const nineMinutesAgo = new Date(currentTime - 8 * 60 * 1000); // 8 minutes ago
+                console.log(nineMinutesAgo, currentTime);
+                if ((data?.result?.acceptor_responded === true && data?.result?.challenger_responded == true)) {
+                    if (data?.result?.acceptor_image && !data?.result?.challenger_image) {
+                        acceptreject(data?.id, data?.acceptor, "accepted");
+                    }
+                    else if (!data?.result?.acceptor_image && data?.result?.challenger_image) {
+                        acceptreject(data?.id, data?.challenger, "accepted");
+                    }
+                }
+                if (createdAt <= nineMinutesAgo) {
+                    console.log("created at time is small than new time ", data);
+                    // console.log(!data?.result?.challenger_input);
+                    // console.log(!data?.result?.acceptor_input);
+                    if (data?.result?.challenger_input || data?.result?.acceptor_input) {
+                        console.log("in main condition", data?.result?.acceptor_responded);
 
-            //     if (createdAt <= nineMinutesAgo) {
-            //         console.log("created at time is small than new time ");
-            //         console.log(!data?.result?.challenger_input);
-            //         console.log(!data?.result?.acceptor_input);
-            //         if (data?.result?.challenger_input || data?.result?.acceptor_input) {
-            //             console.log("in main condition");
-            //             if (data?.result?.challenger_input === false || (data?.result?.challenger_input === false && !data?.result?.challenger_image)) {
-            //                 console.log(("acceptor won"));
-            //                 acceptreject(data?.id, data?.acceptor, "rejected");
-            //             } else if (data?.result?.acceptor_input === false || (data?.result?.acceptorr_input === true && !data?.result?.acceptorr_image)) {
-            //                 console.log(("cahllenger won"));
-            //                 acceptreject(data?.id, data?.challenger, "rejected");
-            //             }
-            //         }
-            //     }
-            // });
+                        if ((data?.result?.acceptor_responded === true && !data?.result?.acceptor_image) && data?.result?.challenger_responded == false) {
+                            console.log(("acceptor lost"));
+                            acceptreject(data?.id, data?.challenger, "accepted");
+                        }
+                        else if ((data?.result?.challenger_responded == true && !data?.result?.challenger_image) && data?.result?.acceptor_responded == false) {
+                            console.log(("cahllenger lost"));
+                            acceptreject(data?.id, data?.acceptor, "accepted");
+                        }
+                        else if ((data?.result?.challenger_responded == true && data?.result?.challenger_image) && (data?.result?.acceptor_responded === false && !data?.result?.acceptor_image)) {
+                            console.log(("acceptor lost"));
+                            acceptreject(data?.id, data?.challenger, "accepted");
+                        }
+                        else if ((data?.result?.challenger_responded == false && data?.result?.challenger_image == null) && (data?.result?.acceptor_responded === true && data?.result?.acceptor_image)) {
+                            console.log(("acceptor lost"));
+                            acceptreject(data?.id, data?.acceptor, "accepted");
+                        }
+                        // if (data?.result?.challenger_input === false || (data?.result?.challenger_input === false && !data?.result?.challenger_image)) {
+                        //     // console.log(("acceptor won"));
+                        //     acceptreject(data?.id, data?.acceptor, "rejected");
+                        // } else if (data?.result?.acceptor_input === false || (data?.result?.acceptorr_input === true && !data?.result?.acceptorr_image)) {
+                        //     console.log(("cahllenger won"));
+                        //     acceptreject(data?.id, data?.challenger, "rejected");
+                        // }
+                    }
+                }
+            });
         }
         catch (err) {
             console.log(err);
@@ -249,16 +273,16 @@ function GameJudgement() {
         console.log(("judgements", new Date()));
         gamejudgement();
 
-        // const updateInterval = setInterval(() => {
-        //     // console.log("10 minutes has been completyed", new Date());
-        //     gamejudgement();
-        //     // }, 600);   //10 minutes
-        // }, 6000);   //10 minutes
+        const updateInterval = setInterval(() => {
+            // console.log("10 minutes has been completyed", new Date());
+            gamejudgement();
+            // }, 600);   //10 minutes
+        }, 6000);   //10 minutes
 
-        // return () => {
-        //     // Clear the interval when the component is unmounted
-        //     clearInterval(updateInterval);
-        // };
+        return () => {
+            // Clear the interval when the component is unmounted
+            clearInterval(updateInterval);
+        };
     }, [])
 
     const renderedTableRows = filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((data, index) => {
