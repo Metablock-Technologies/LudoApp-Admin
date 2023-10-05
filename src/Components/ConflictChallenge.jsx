@@ -200,10 +200,10 @@ function GameJudgement() {
                 console.log(nineMinutesAgo, currentTime);
                 if ((data?.result?.acceptor_responded === true && data?.result?.challenger_responded == true)) {
                     if (data?.result?.acceptor_image && !data?.result?.challenger_image) {
-                        acceptreject(data?.id, data?.acceptor, "accepted");
+                        acceptreject(data?.id, data?.acceptor, "3");
                     }
                     else if (!data?.result?.acceptor_image && data?.result?.challenger_image) {
-                        acceptreject(data?.id, data?.challenger, "accepted");
+                        acceptreject(data?.id, data?.challenger, "3");
                     }
                 }
                 if (createdAt <= nineMinutesAgo) {
@@ -215,19 +215,19 @@ function GameJudgement() {
 
                         if ((data?.result?.acceptor_responded === true && !data?.result?.acceptor_image) && data?.result?.challenger_responded == false) {
                             console.log(("acceptor lost"));
-                            acceptreject(data?.id, data?.challenger, "accepted");
+                            acceptreject(data?.id, data?.challenger, "3");
                         }
                         else if ((data?.result?.challenger_responded == true && !data?.result?.challenger_image) && data?.result?.acceptor_responded == false) {
                             console.log(("cahllenger lost"));
-                            acceptreject(data?.id, data?.acceptor, "accepted");
+                            acceptreject(data?.id, data?.acceptor, "3");
                         }
                         else if ((data?.result?.challenger_responded == true && data?.result?.challenger_image) && (data?.result?.acceptor_responded === false && !data?.result?.acceptor_image)) {
                             console.log(("acceptor lost"));
-                            acceptreject(data?.id, data?.challenger, "accepted");
+                            acceptreject(data?.id, data?.challenger, "3");
                         }
                         else if ((data?.result?.challenger_responded == false && data?.result?.challenger_image == null) && (data?.result?.acceptor_responded === true && data?.result?.acceptor_image)) {
                             console.log(("acceptor lost"));
-                            acceptreject(data?.id, data?.acceptor, "accepted");
+                            acceptreject(data?.id, data?.acceptor, "3");
                         }
                         // if (data?.result?.challenger_input === false || (data?.result?.challenger_input === false && !data?.result?.challenger_image)) {
                         //     // console.log(("acceptor won"));

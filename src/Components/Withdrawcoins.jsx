@@ -97,7 +97,7 @@ function Withdrawcoins() {
             withdrawcoins();
         }
         catch (err) {
-            alert(err?.data?.data?.data?.message)
+            // alert(err?.data?.data?.data?.message)
             console.log(err);
         }
     };
@@ -196,6 +196,7 @@ function Withdrawcoins() {
         return (<tr key={index}>
             <td>{index + 1}</td>
             <td>{data.amount}</td>
+            <td>{data.user?.wallet?.amount}</td>
             <td>{data.user.username}</td>
             <td>{data.details}</td>
             <td>
@@ -333,6 +334,7 @@ function Withdrawcoins() {
                                                             <tr role="row">
                                                                 <th className="sorting_asc" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 101 }} aria-sort="ascending" aria-label="SR. NO.: activate to sort column descending">Number</th>
                                                                 <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Amount </th>
+                                                                <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 76 }} aria-label="From: activate to sort column ascending">Waallet_Amount </th>
                                                                 <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 175 }} aria-label="To User Name: activate to sort column ascending">User_Id</th>
                                                                 <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 175 }} aria-label="To User Name: activate to sort column ascending">UpiId</th>
                                                                 <th className="sorting" tabIndex={0} aria-controls="table_id" rowSpan={1} colSpan={1} style={{ width: 109 }} aria-label="Amount: activate to sort column ascending">Message</th>
